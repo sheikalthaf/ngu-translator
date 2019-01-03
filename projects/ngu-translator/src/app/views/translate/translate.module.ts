@@ -6,11 +6,7 @@ import { TranslationFormComponent } from './translation-form/translation-form.co
 import { TranslateRoutingModule } from './translate.routing';
 
 @NgModule({
-  declarations: [
-    TranslateShellComponent,
-    TranslationUnitsComponent,
-    TranslationFormComponent
-  ],
+  declarations: [TranslateShellComponent, TranslationUnitsComponent, TranslationFormComponent],
   imports: [CommonModule, TranslateRoutingModule]
 })
 export class TranslateModule {}
