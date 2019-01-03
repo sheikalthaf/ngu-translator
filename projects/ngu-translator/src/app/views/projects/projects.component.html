@@ -1,6 +1,13 @@
 <h1>Projects</h1>
-<mat-card *ngFor="let item of [1,2,3]" [routerLink]="['/translate']" routerLinkActive="router-link-active">
-  <div>Simple card</div>
-  <div>87 % translated</div>
+<mat-card
+  *ngFor="let item of projects"
+  [routerLink]="['/translate']"
+  routerLinkActive="router-link-active"
+>
+  <div>{{ item.name }}</div>
+  <app-translation-file-status
+    [translationFileView]="item.translationFileView"
+    [translationFile]="item.translationFile"
+  ></app-translation-file-status>
 </mat-card>
-<button mat-fab>+</button>
+<button mat-fab (click)="addProjects()">+</button>

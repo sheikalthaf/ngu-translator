@@ -6,12 +6,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './shared/material/material.module';
 import { HomeComponent } from './views/home/home.component';
 import { AppRoutingModule } from './app.routing';
-import { ProjectsComponent } from './views/projects/projects.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { BackendServiceAPI } from './shared/services/backend-service-api';
+import { BackendLocalStorageService } from './shared/services/backend-local-storage.service';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, ProjectsComponent],
+  declarations: [AppComponent, HomeComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -19,7 +20,7 @@ import { environment } from '../environments/environment';
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
-  providers: [],
+  providers: [{ provide: BackendServiceAPI, useClass: BackendLocalStorageService }],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

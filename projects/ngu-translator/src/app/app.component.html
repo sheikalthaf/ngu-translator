@@ -1,10 +1,12 @@
 <div class="example-container">
   <mat-toolbar color="primary" class="example-toolbar">
     <button mat-icon-button><mat-icon>menu</mat-icon></button>
-    <h1 class="example-app-name">Translator</h1>
+    <h1 class="example-app-name" [routerLink]="['/']" routerLinkActive="router-link-active">
+      Translator
+    </h1>
   </mat-toolbar>
 
   <mat-sidenav-container class="example-sidenav-container">
-    <mat-sidenav-content> <router-outlet></router-outlet> </mat-sidenav-content>
+    <mat-sidenav-content><router-outlet></router-outlet></mat-sidenav-content>
   </mat-sidenav-container>
 </div>

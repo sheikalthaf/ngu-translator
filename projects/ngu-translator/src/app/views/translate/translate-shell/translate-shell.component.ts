@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TinyTranslatorService } from '../../../shared/services';
 
 @Component({
   selector: 'app-translate-shell',
@@ -6,7 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./translate-shell.component.scss']
 })
 export class TranslateShellComponent implements OnInit {
-  constructor() {}
+  constructor(private translate: TinyTranslatorService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.translate.currentProject());
+  }
 }

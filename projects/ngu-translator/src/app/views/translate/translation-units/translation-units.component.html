@@ -1,3 +1,14 @@
-<p>
-  translation-units works!
-</p>
+<mat-list>
+  <h3 matSubheader i18n>Translation Units</h3>
+  <mat-list-item *ngFor="let tu of transUnits" (click)="selectTransUnit(tu)">
+    <mat-icon matListAvatar *ngIf="tu.targetState() === 'final'">done</mat-icon>
+    <mat-icon matListAvatar *ngIf="tu.targetState() === 'translated'">label_outline</mat-icon>
+    <mat-icon matListAvatar *ngIf="!tu.isTranslated()">translate</mat-icon>
+    <h4 matLine [ngClass]="{ selected: isSelected(tu) }">
+      {{ tu.sourceContentNormalized().dislayText(true) | abbreviate }}
+    </h4>
+    <h4 matLine [ngClass]="{ selected: isSelected(tu) }">
+      {{ tu.targetContentNormalized().dislayText(true) | abbreviate }}
+    </h4>
+  </mat-list-item>
+</mat-list>

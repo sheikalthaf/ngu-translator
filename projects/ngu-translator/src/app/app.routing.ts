@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from './views';
-import { ProjectsComponent } from './views/projects/projects.component';
+import { ProjectsModule } from './views/projects/projects.module';
+
+const test = () => ProjectsModule;
 
 const routes: Routes = [
   {
     path: '',
-    component: ProjectsComponent
+    loadChildren: test
   },
   {
     path: 'translate',
