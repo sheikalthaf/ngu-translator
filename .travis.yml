@@ -6,8 +6,18 @@ sudo: required
 branches:
   only:
     - master
+
 before_script:
-  - npm install -g @angular/cli
+  - yarn install -g @angular/cli
+
 script:
   - ng lint
-  - npm run build-site
+  - yarn run build-site
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: dist/ngu-translator
+  on:
+    branch: master
