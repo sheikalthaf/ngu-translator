@@ -12,7 +12,7 @@
     "precommit": "run-s format:fix",
     "format:fix": "pretty-quick --staged",
     "format:all": "prettier --config ./.prettierrc --write \"projects/ngu-translator/src/{app,environments}/**/*{.ts,.js,.json,.css,.scss}\"",
-    "build-site": "yarn run cp-file && ng build --project ngu-translator --prod --base-href https://sheikalthaf.github.io/ngu-translator"
+    "build-site": "yarn run cp-file && ng build --project ngu-translator --prod --base-href https://sheikalthaf.github.io/ngu-translator/"
   },
   "private": true,
   "dependencies": {
