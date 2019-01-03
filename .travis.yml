@@ -8,7 +8,7 @@ branches:
     - master
 
 before_script:
-  - yarn install -g @angular/cli
+  - yarn global add @angular/cli
 
 script:
   - ng lint
