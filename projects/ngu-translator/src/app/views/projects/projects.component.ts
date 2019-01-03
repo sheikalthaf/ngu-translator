@@ -23,6 +23,6 @@ export class ProjectsComponent implements OnInit {
   ngOnInit() {}
 
   addProjects() {
-    this.proj.openDialog().subscribe(e => e && this.router.navigateByUrl('/translate'));
+    this.proj.openDialog().subscribe(e => e);
   }
 }

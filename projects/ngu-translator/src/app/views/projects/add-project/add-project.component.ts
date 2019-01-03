@@ -9,6 +9,7 @@ import { isNullOrUndefined } from 'util';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { TinyTranslatorService } from '../../../shared/services';
 import { Router } from '@angular/router';
+import { MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-add-project',
@@ -25,7 +26,11 @@ export class AddProjectComponent implements OnInit {
   private selectedFiles: FileList;
   private selectedMasterXmbFiles: FileList;
 
-  constructor(private formBuilder: FormBuilder, private translatorService: TinyTranslatorService) {}
+  constructor(
+    public dialogRef: MatDialogRef<AddProjectComponent>,
+    private formBuilder: FormBuilder,
+    private translatorService: TinyTranslatorService
+  ) {}
 
   ngOnInit() {
     this.initForm();
@@ -113,6 +118,7 @@ export class AddProjectComponent implements OnInit {
   public addProject(newProject = this.createdProject) {
     this.translatorService.addProject(newProject);
     this.translatorService.setCurrentProject(newProject);
+    this.dialogRef.close(true);
   }
 
   selectedFilesFormatted(): string {
