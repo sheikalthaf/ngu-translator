@@ -2,5 +2,134 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "projects",
-  "projects": {}
+  "projects": {
+    "ngu-translator": {
+      "root": "projects/ngu-translator/",
+      "sourceRoot": "projects/ngu-translator/src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/ngu-translator",
+            "index": "projects/ngu-translator/src/index.html",
+            "main": "projects/ngu-translator/src/main.ts",
+            "polyfills": "projects/ngu-translator/src/polyfills.ts",
+            "tsConfig": "projects/ngu-translator/tsconfig.app.json",
+            "assets": [
+              "projects/ngu-translator/src/favicon.ico",
+              "projects/ngu-translator/src/assets"
+            ],
+            "styles": [
+              "projects/ngu-translator/src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/ngu-translator/src/environments/environment.ts",
+                  "with": "projects/ngu-translator/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "ngu-translator:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "ngu-translator:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "ngu-translator:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngu-translator/src/test.ts",
+            "polyfills": "projects/ngu-translator/src/polyfills.ts",
+            "tsConfig": "projects/ngu-translator/tsconfig.spec.json",
+            "karmaConfig": "projects/ngu-translator/karma.conf.js",
+            "styles": [
+              "projects/ngu-translator/src/styles.css"
+            ],
+            "scripts": [],
+            "assets": [
+              "projects/ngu-translator/src/favicon.ico",
+              "projects/ngu-translator/src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngu-translator/tsconfig.app.json",
+              "projects/ngu-translator/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "ngu-translator-e2e": {
+      "root": "projects/ngu-translator-e2e/",
+      "projectType": "application",
+      "prefix": "",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/ngu-translator-e2e/protractor.conf.js",
+            "devServerTarget": "ngu-translator:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "ngu-translator:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "projects/ngu-translator-e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "ngu-translator"
 }
