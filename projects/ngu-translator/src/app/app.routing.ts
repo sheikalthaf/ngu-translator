@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ProjectsModule } from './views/projects/projects.module';
 
-const test = () => ProjectsModule;
+// const test = () => ProjectsModule;
 
 const routes: Routes = [
   {
     path: '',
-    loadChildren: test
+    loadChildren: './views/projects/projects.module#ProjectsModule'
   },
   {
     path: 'translate',
