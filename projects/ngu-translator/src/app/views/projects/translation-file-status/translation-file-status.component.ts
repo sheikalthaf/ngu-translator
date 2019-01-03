@@ -11,7 +11,7 @@ import { TranslationFileView } from '../../../shared/services/translation-file-v
 @Component({
   selector: 'app-translation-file-status',
   templateUrl: './translation-file-status.component.html',
-  styleUrls: ['./translation-file-status.component.css']
+  styleUrls: ['./translation-file-status.component.scss']
 })
 export class TranslationFileStatusComponent implements OnInit {
   @Input() translationFile: TranslationFile;

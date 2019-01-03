@@ -1,10 +1,6 @@
 <h1>Projects</h1>
-<mat-card
-  *ngFor="let item of projects"
-  [routerLink]="['/translate']"
-  routerLinkActive="router-link-active"
->
-  <div>{{ item.name }}</div>
+<mat-card *ngFor="let item of (count$ | async)" (click)="openProject(item)">
+  <h3>{{ item.name }}</h3>
   <app-translation-file-status
     [translationFileView]="item.translationFileView"
     [translationFile]="item.translationFile"

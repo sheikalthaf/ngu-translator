@@ -1,6 +1,6 @@
 <mat-list>
   <h3 matSubheader i18n>Translation Units</h3>
-  <mat-list-item *ngFor="let tu of transUnits" (click)="selectTransUnit(tu)">
+  <mat-list-item *ngFor="let tu of (count$ | async)" (click)="selectTransUnit(tu)">
     <mat-icon matListAvatar *ngIf="tu.targetState() === 'final'">done</mat-icon>
     <mat-icon matListAvatar *ngIf="tu.targetState() === 'translated'">label_outline</mat-icon>
     <mat-icon matListAvatar *ngIf="!tu.isTranslated()">translate</mat-icon>

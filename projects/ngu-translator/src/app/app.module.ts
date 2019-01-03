@@ -10,6 +10,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { BackendServiceAPI } from './shared/services/backend-service-api';
 import { BackendLocalStorageService } from './shared/services/backend-local-storage.service';
+import { StoreModule } from '@ngrx/store';
+import { translationReducer } from './store/translation.reducer';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -18,6 +20,7 @@ import { BackendLocalStorageService } from './shared/services/backend-local-stor
     BrowserAnimationsModule,
     MaterialModule,
     AppRoutingModule,
+    StoreModule.forRoot({ translation: translationReducer }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [{ provide: BackendServiceAPI, useClass: BackendLocalStorageService }],

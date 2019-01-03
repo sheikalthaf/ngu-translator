@@ -1,4 +1,4 @@
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 /**
@@ -74,7 +74,7 @@ export class AutoTranslateServiceAPI {
    * @return Observable with translated message or error
    */
   public translate(message: string, from: string, to: string): Observable<string> {
-    return Observable.throw('no translation service installed');
+    return throwError('no translation service installed');
   }
 
   /**
@@ -89,6 +89,6 @@ export class AutoTranslateServiceAPI {
     from: string,
     to: string
   ): Observable<string[]> {
-    return Observable.throw('no translation service installed');
+    return throwError('no translation service installed');
   }
 }

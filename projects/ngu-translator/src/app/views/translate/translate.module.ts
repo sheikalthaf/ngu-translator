@@ -4,9 +4,10 @@ import { TranslationUnitsComponent } from './translation-units/translation-units
 import { TranslationFormComponent } from './translation-form/translation-form.component';
 import { TranslateRoutingModule } from './translate.routing';
 import { SharedModule } from '../../shared/shared.module';
+import { StoreModule } from '@ngrx/store';
 
 @NgModule({
   declarations: [TranslateShellComponent, TranslationUnitsComponent, TranslationFormComponent],
-  imports: [SharedModule, TranslateRoutingModule]
+  imports: [SharedModule, TranslateRoutingModule, StoreModule]
 })
 export class TranslateModule {}

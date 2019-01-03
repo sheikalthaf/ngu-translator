@@ -1,7 +1,10 @@
 import { Component, OnInit, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { TinyTranslatorService } from '../../../shared/services';
+import { TinyTranslatorService, TranslationProject } from '../../../shared/services';
 import { TranslationUnit } from '../../../shared/services/translation-unit';
 import { TranslationFileView } from '../../../shared/services/translation-file-view';
+import { Store, select } from '@ngrx/store';
+import * as fromRoot from '../../../store/translation.selectors';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-translation-units',
@@ -20,8 +23,10 @@ export class TranslationUnitsComponent implements OnInit {
 
   translationFileView: TranslationFileView;
   transUnits: TranslationUnit[];
+  count$: Observable<TranslationUnit[]>;
 
-  constructor(private translation: TinyTranslatorService) {
+  constructor(private translation: TinyTranslatorService, private store: Store<fromRoot.AppState>) {
+    this.count$ = store.pipe(select(fromRoot.scrollabeTransUnits));
     const project = this.translation.currentProject();
     this.translationFileView = project
       ? project.translationFileView

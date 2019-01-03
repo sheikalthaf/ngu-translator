@@ -7,9 +7,10 @@ import { ProjectsComponent } from './projects.component';
 import { ProjectsRoutingModule } from './projects.routing';
 import { LanguageComponent } from './language/language.component';
 import { ProjectService } from './projects.service';
+import { StoreModule } from '@ngrx/store';
 
 @NgModule({
-  imports: [SharedModule, ProjectsRoutingModule],
+  imports: [SharedModule, ProjectsRoutingModule, StoreModule],
   exports: [],
   declarations: [
     ProjectsComponent,

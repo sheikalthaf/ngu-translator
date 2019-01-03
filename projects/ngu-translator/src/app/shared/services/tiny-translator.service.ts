@@ -13,6 +13,8 @@ import {
 import { AutoTranslateSummaryReport } from './auto-translate-summary-report';
 import { TranslationUnit } from './translation-unit';
 import { map } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { Add } from '../../store/translation.actions';
 
 @Injectable({ providedIn: 'root' })
 export class TinyTranslatorService {
@@ -30,7 +32,8 @@ export class TinyTranslatorService {
     private backendService: BackendServiceAPI,
     private fileReaderService: AsynchronousFileReaderService,
     private downloaderService: DownloaderService,
-    private autoTranslateService: AutoTranslateServiceAPI
+    private autoTranslateService: AutoTranslateServiceAPI,
+    private store: Store<{ translation: TranslationProject[] }>
   ) {
     this._projects = this.backendService.projects();
     const currentProjectId = this.backendService.currentProjectId();
@@ -45,6 +48,7 @@ export class TinyTranslatorService {
       this.currentProject().translationFileView.selectTransUnit(transUnit);
     }
     this.autoTranslateService.setApiKey(this.backendService.autoTranslateApiKey());
+    this.store.dispatch(new Add({ projects: this._projects, currentId: currentProjectId }));
   }
 
   /**

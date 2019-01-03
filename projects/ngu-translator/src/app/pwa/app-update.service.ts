@@ -3,7 +3,7 @@ import { SwUpdate } from '@angular/service-worker';
 import { interval, concat } from 'rxjs';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter, first } from 'rxjs/operators';
-import { DOCUMENT } from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
