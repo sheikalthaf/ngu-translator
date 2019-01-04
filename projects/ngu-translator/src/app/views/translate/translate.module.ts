@@ -5,9 +5,20 @@ import { TranslationFormComponent } from './translation-form/translation-form.co
 import { TranslateRoutingModule } from './translate.routing';
 import { SharedModule } from '../../shared/shared.module';
 import { StoreModule } from '@ngrx/store';
+import { NormalizedMessageInputComponent } from './normalized-message-input/normalized-message-input.component';
+import { TranslateUnitWarningConfirmDialogComponent } from './translate-unit-warning-confirm-dialog/translate-unit-warning-confirm-dialog.component';
+import { SharedCommonModule } from '../shared-common.module';
 
 @NgModule({
-  declarations: [TranslateShellComponent, TranslationUnitsComponent, TranslationFormComponent],
-  imports: [SharedModule, TranslateRoutingModule, StoreModule]
+  imports: [SharedModule, TranslateRoutingModule, StoreModule, SharedCommonModule],
+  declarations: [
+    TranslateShellComponent,
+    TranslationUnitsComponent,
+    TranslationFormComponent,
+
+    NormalizedMessageInputComponent,
+    TranslateUnitWarningConfirmDialogComponent
+  ],
+  entryComponents: [TranslateUnitWarningConfirmDialogComponent]
 })
 export class TranslateModule {}

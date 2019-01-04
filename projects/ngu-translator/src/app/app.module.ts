@@ -12,6 +12,9 @@ import { BackendServiceAPI } from './shared/services/backend-service-api';
 import { BackendLocalStorageService } from './shared/services/backend-local-storage.service';
 import { StoreModule } from '@ngrx/store';
 import { translationReducer } from './store/translation.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { TranslationEffect } from './store/translation.effect';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -20,8 +23,13 @@ import { translationReducer } from './store/translation.reducer';
     BrowserAnimationsModule,
     MaterialModule,
     AppRoutingModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     StoreModule.forRoot({ translation: translationReducer }),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    EffectsModule.forRoot([TranslationEffect])
+    // StoreDevtoolsModule.instrument({
+    //   maxAge: 2, // Retains last 25 states
+    //   logOnly: environment.production // Restrict extension to log-only mode
+    // })
   ],
   providers: [{ provide: BackendServiceAPI, useClass: BackendLocalStorageService }],
   bootstrap: [AppComponent]

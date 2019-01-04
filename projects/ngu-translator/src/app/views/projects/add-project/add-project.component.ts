@@ -7,9 +7,12 @@ import {
 import { FILETYPE_XTB } from 'ngx-i18nsupport-lib';
 import { isNullOrUndefined } from 'util';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { TinyTranslatorService } from '../../../shared/services';
+import { TinyTranslatorService } from '../../../shared/services/translation';
 import { Router } from '@angular/router';
 import { MatDialogRef } from '@angular/material';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../store/translation.selectors';
+import { AddProject } from '../../../store/translation.actions';
 
 @Component({
   selector: 'app-add-project',
@@ -29,7 +32,8 @@ export class AddProjectComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<AddProjectComponent>,
     private formBuilder: FormBuilder,
-    private translatorService: TinyTranslatorService
+    private translatorService: TinyTranslatorService,
+    private store: Store<AppState>
   ) {}
 
   ngOnInit() {
@@ -116,8 +120,9 @@ export class AddProjectComponent implements OnInit {
   }
 
   public addProject(newProject = this.createdProject) {
-    this.translatorService.addProject(newProject);
-    this.translatorService.setCurrentProject(newProject);
+    this.store.dispatch(new AddProject(newProject));
+    // this.translatorService.addProject(newProject);
+    // this.translatorService.setCurrentProject(newProject);
     this.dialogRef.close(true);
   }
 

@@ -13,33 +13,38 @@ import {
 import { AutoTranslateSummaryReport } from './auto-translate-summary-report';
 import { TranslationUnit } from './translation-unit';
 import { map } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
-import { Add } from '../../store/translation.actions';
+import { Store, select } from '@ngrx/store';
+import { LoadProject } from '../../store/translation.actions';
+import { selectedProject, AppState } from '../../store/translation.selectors';
 
 @Injectable({ providedIn: 'root' })
 export class TinyTranslatorService {
+  _currentProject: TranslationProject;
   /**
    * List of projects for work.
    */
-  private _projects: TranslationProject[];
+  // private _projects: TranslationProject[];
 
   /**
    * The current project.
    */
-  private _currentProject: TranslationProject;
+  // private _currentProject: TranslationProject;
 
   constructor(
     private backendService: BackendServiceAPI,
     private fileReaderService: AsynchronousFileReaderService,
     private downloaderService: DownloaderService,
     private autoTranslateService: AutoTranslateServiceAPI,
-    private store: Store<{ translation: TranslationProject[] }>
+    private store: Store<AppState>
   ) {
-    this._projects = this.backendService.projects();
+    this.store.pipe(select(selectedProject)).subscribe(e => (this._currentProject = e));
+    const _projects = this.backendService.projects();
     const currentProjectId = this.backendService.currentProjectId();
-    if (currentProjectId) {
-      this._currentProject = this._projects.find(project => project.id === currentProjectId);
-    }
+    const _currentProject = currentProjectId
+      ? _projects.find(project => project.id === currentProjectId)
+      : null;
+    // if (currentProjectId) {
+    // }
     const currentTransUnitId: string = this.backendService.currentTransUnitId();
     if (currentTransUnitId && this.currentProject()) {
       const transUnit = this.currentProject()
@@ -48,7 +53,13 @@ export class TinyTranslatorService {
       this.currentProject().translationFileView.selectTransUnit(transUnit);
     }
     this.autoTranslateService.setApiKey(this.backendService.autoTranslateApiKey());
-    this.store.dispatch(new Add({ projects: this._projects, currentId: currentProjectId }));
+    this.store.dispatch(
+      new LoadProject({
+        projects: _projects,
+        currentId: currentProjectId,
+        currentProject: _currentProject
+      })
+    );
   }
 
   /**
@@ -56,12 +67,27 @@ export class TinyTranslatorService {
    * @param project
    * @return list of errors found in file selection.
    */
-  public addProject(project: TranslationProject): string[] {
-    this._projects.push(project);
-    this.backendService.store(project);
-    // TODO error handling
-    return [];
-  }
+  // public addProject(project: TranslationProject): string[] {
+  //   this._projects.push(project);
+  //   this.backendService.store(project);
+  //   // TODO error handling
+  //   return [];
+  // }
+
+  // loadProjects() {
+  //   const project = this.projects();
+  //   const currentProjectId = this.currentProject();
+  //   const d = {
+  //     projects: project,
+  //     currentId: currentProjectId,
+  //     selectTransUnit: project
+  //       .find(e => e.id === currentProjectId)
+  //       .translationFileView.currentTransUnit()
+  //       .id()
+  //   };
+  //   console.log(d);
+  //   return d;
+  // }
 
   /**
    * Create a new project.
@@ -87,19 +113,19 @@ export class TinyTranslatorService {
     );
   }
 
-  public setCurrentProject(project: TranslationProject) {
-    let id: string = null;
-    if (project) {
-      if (isNullOrUndefined(this._projects.find(p => p === project))) {
-        throw new Error('oops, selected project not in list');
-      }
-      id = project.id;
-    }
-    this._currentProject = project;
-    this.backendService.storeCurrentProjectId(id);
-  }
+  // public setCurrentProject(project: TranslationProject) {
+  //   let id: string = null;
+  //   if (project) {
+  //     if (isNullOrUndefined(this._projects.find(p => p === project))) {
+  //       throw new Error('oops, selected project not in list');
+  //     }
+  //     id = project.id;
+  //   }
+  //   this._currentProject = project;
+  //   this.backendService.storeCurrentProjectId(id);
+  // }
 
-  public currentProject(): TranslationProject {
+  private currentProject(): TranslationProject {
     return this._currentProject;
   }
 
@@ -109,12 +135,10 @@ export class TinyTranslatorService {
    * @param transUnit
    */
   public selectTransUnit(transUnit: TranslationUnit) {
-    if (!this.currentProject()) {
-      return;
-    } else {
-      if (this.currentProject().translationFileView.selectTransUnit(transUnit)) {
-        this.backendService.storeCurrentTransUnitId(transUnit.id());
-      }
+    if (!this.currentProject()) return;
+
+    if (this.currentProject().translationFileView.selectTransUnit(transUnit)) {
+      this.backendService.storeCurrentTransUnitId(transUnit.id());
     }
   }
 
@@ -122,41 +146,36 @@ export class TinyTranslatorService {
    * Navigate to next unit.
    */
   public nextTransUnit() {
-    if (!this.currentProject()) {
-      return;
-    } else {
-      const transUnit = this.currentProject().translationFileView.nextTransUnit();
-      this.backendService.storeCurrentTransUnitId(transUnit.id());
-    }
+    if (!this.currentProject()) return;
+
+    const transUnit = this.currentProject().translationFileView.nextTransUnit();
+    this.backendService.storeCurrentTransUnitId(transUnit.id());
   }
 
   /**
    * Navigate to previous unit.
    */
   public prevTransUnit() {
-    if (!this.currentProject()) {
-      return;
-    } else {
-      const transUnit = this.currentProject().translationFileView.prevTransUnit();
-      this.backendService.storeCurrentTransUnitId(transUnit.id());
-    }
+    if (!this.currentProject()) return;
+
+    const transUnit = this.currentProject().translationFileView.prevTransUnit();
+    this.backendService.storeCurrentTransUnitId(transUnit.id());
   }
 
   /**
    * Check, wether there are errors in any of the selected files.
    * @return {boolean}
    */
-  public hasErrors(): boolean {
-    if (!this._projects || this._projects.length === 0) {
-      return false;
-    }
-    const projectWithErrors = this._projects.find(p => p.hasErrors());
-    return !isNullOrUndefined(projectWithErrors);
-  }
+  // public hasErrors(): boolean {
+  //   if (!this._projects || this._projects.length === 0) return false;
 
-  public projects(): TranslationProject[] {
-    return this._projects;
-  }
+  //   const projectWithErrors = this._projects.find(p => p.hasErrors());
+  //   return !isNullOrUndefined(projectWithErrors);
+  // }
+
+  // public projects(): TranslationProject[] {
+  //   return this._projects;
+  // }
 
   public commitChanges(project: TranslationProject) {
     this.backendService.store(project);
@@ -171,16 +190,16 @@ export class TinyTranslatorService {
     this.commitChanges(project);
   }
 
-  public deleteProject(project: TranslationProject) {
-    this.backendService.deleteProject(project);
-    const index = this._projects.findIndex(p => p === project);
-    if (index >= 0) {
-      this._projects = this._projects.slice(0, index).concat(this._projects.slice(index + 1));
-      if (project === this.currentProject()) {
-        this.setCurrentProject(null);
-      }
-    }
-  }
+  // public deleteProject(project: TranslationProject) {
+  //   this.backendService.deleteProject(project);
+  //   const index = this._projects.findIndex(p => p === project);
+  //   if (index >= 0) {
+  //     this._projects = this._projects.slice(0, index).concat(this._projects.slice(index + 1));
+  //     if (project === this.currentProject()) {
+  //       this.setCurrentProject(null);
+  //     }
+  //   }
+  // }
 
   /**
    * Set an API key for Google Translate.

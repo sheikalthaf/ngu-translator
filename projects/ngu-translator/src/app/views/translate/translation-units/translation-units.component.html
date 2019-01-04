@@ -4,11 +4,8 @@
     <mat-icon matListAvatar *ngIf="tu.targetState() === 'final'">done</mat-icon>
     <mat-icon matListAvatar *ngIf="tu.targetState() === 'translated'">label_outline</mat-icon>
     <mat-icon matListAvatar *ngIf="!tu.isTranslated()">translate</mat-icon>
-    <h4 matLine [ngClass]="{ selected: isSelected(tu) }">
-      {{ tu.sourceContentNormalized().dislayText(true) | abbreviate }}
-    </h4>
-    <h4 matLine [ngClass]="{ selected: isSelected(tu) }">
-      {{ tu.targetContentNormalized().dislayText(true) | abbreviate }}
-    </h4>
+    <h4 matLine>{{ tu.sourceContentNormalized().dislayText(true) | abbreviate }}</h4>
+    <h4 matLine>{{ tu.targetContentNormalized().dislayText(true) | abbreviate }}</h4>
   </mat-list-item>
 </mat-list>
+<!-- [class.selected]="(currentProject$ | async).id() == tu.id()" -->

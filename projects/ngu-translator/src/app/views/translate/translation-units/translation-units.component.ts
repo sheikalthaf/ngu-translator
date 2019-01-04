@@ -1,10 +1,11 @@
-import { Component, OnInit, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { TinyTranslatorService, TranslationProject } from '../../../shared/services';
-import { TranslationUnit } from '../../../shared/services/translation-unit';
-import { TranslationFileView } from '../../../shared/services/translation-file-view';
-import { Store, select } from '@ngrx/store';
-import * as fromRoot from '../../../store/translation.selectors';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { TinyTranslatorService } from '../../../shared/services/translation';
+import { TranslationFileView } from '../../../shared/services/translation-file-view';
+import { TranslationUnit } from '../../../shared/services/translation-unit';
+import { SelectTransUnit } from '../../../store/translation.actions';
+import * as fromRoot from '../../../store/translation.selectors';
 
 @Component({
   selector: 'app-translation-units',
@@ -13,25 +14,19 @@ import { Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TranslationUnitsComponent implements OnInit {
-  /**
-   * Emitted, when user wants to navigate to another unit.
-   * @type {EventEmitter<TranslationUnit>} the wanted trans unit.
-   */
-  @Output() changeTranslationUnit: EventEmitter<TranslationUnit> = new EventEmitter<
-    TranslationUnit
-  >();
-
-  translationFileView: TranslationFileView;
-  transUnits: TranslationUnit[];
+  // translationFileView: TranslationFileView;
+  // transUnits: TranslationUnit[];
   count$: Observable<TranslationUnit[]>;
+  currentProject$: Observable<TranslationUnit>;
 
   constructor(private translation: TinyTranslatorService, private store: Store<fromRoot.AppState>) {
     this.count$ = store.pipe(select(fromRoot.scrollabeTransUnits));
-    const project = this.translation.currentProject();
-    this.translationFileView = project
-      ? project.translationFileView
-      : new TranslationFileView(null);
-    this.transUnits = this.translationFileView.scrollabeTransUnits();
+    this.currentProject$ = store.pipe(select(fromRoot.selectTransUnit));
+    // const project = this.translation.currentProject();
+    // this.translationFileView = project
+    //   ? project.translationFileView
+    //   : new TranslationFileView(null);
+    // this.transUnits = this.translationFileView.scrollabeTransUnits();
   }
 
   ngOnInit() {}
@@ -39,11 +34,11 @@ export class TranslationUnitsComponent implements OnInit {
   //   return this.translationFileView.scrollabeTransUnits();
   // }
 
-  isSelected(tu: TranslationUnit): boolean {
-    return tu && tu === this.translationFileView.currentTransUnit();
-  }
+  // isSelected(tu: TranslationUnit): boolean {
+  //   return tu && tu === this.translationFileView.currentTransUnit();
+  // }
 
   public selectTransUnit(tu: TranslationUnit) {
-    this.changeTranslationUnit.emit(tu);
+    this.store.dispatch(new SelectTransUnit(tu));
   }
 }

@@ -1,11 +1,11 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { TinyTranslatorService, TranslationProject } from '../../shared/services';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { TranslationProject } from '../../shared/services';
 import { ProjectService } from './projects.service';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import * as fromRoot from '../../store/translation.selectors';
-import { tap } from 'rxjs/operators';
+import { SetCurrentProject } from '../../store/translation.actions';
 
 @Component({
   selector: 'app-projects',
@@ -18,9 +18,9 @@ export class ProjectsComponent implements OnInit {
   count$: Observable<TranslationProject[]>;
 
   constructor(
-    private translatorService: TinyTranslatorService,
     private proj: ProjectService,
     private router: Router,
+    private cdr: ChangeDetectorRef,
     private store: Store<fromRoot.AppState>
   ) {
     this.count$ = store.pipe(select(fromRoot.allProjects));
@@ -29,11 +29,11 @@ export class ProjectsComponent implements OnInit {
   ngOnInit() {}
 
   openProject(project: TranslationProject) {
-    this.translatorService.setCurrentProject(project);
+    this.store.dispatch(new SetCurrentProject(project));
     this.router.navigate(['/translate']);
   }
 
   addProjects() {
-    this.proj.openDialog().subscribe(e => e);
+    this.proj.openDialog().subscribe(e => this.cdr.detectChanges());
   }
 }
