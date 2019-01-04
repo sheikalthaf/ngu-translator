@@ -40,14 +40,15 @@ export class TinyTranslatorService {
     this.store.pipe(select(selectedProject)).subscribe(e => (this._currentProject = e));
     const _projects = this.backendService.projects();
     const currentProjectId = this.backendService.currentProjectId();
-    const _currentProject = currentProjectId
+    this._currentProject = currentProjectId
       ? _projects.find(project => project.id === currentProjectId)
       : null;
     // if (currentProjectId) {
     // }
     const currentTransUnitId: string = this.backendService.currentTransUnitId();
+    let transUnit: TranslationUnit;
     if (currentTransUnitId && this.currentProject()) {
-      const transUnit = this.currentProject()
+      transUnit = this.currentProject()
         .translationFile.allTransUnits()
         .find(tu => tu.id() === currentTransUnitId);
       this.currentProject().translationFileView.selectTransUnit(transUnit);
@@ -57,7 +58,8 @@ export class TinyTranslatorService {
       new LoadProject({
         projects: _projects,
         currentId: currentProjectId,
-        currentProject: _currentProject
+        currentProject: this._currentProject,
+        selectTransUnit: transUnit
       })
     );
   }

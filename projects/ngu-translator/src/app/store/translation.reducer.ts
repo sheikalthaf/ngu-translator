@@ -6,13 +6,15 @@ export const initialState = new Translationss();
 
 export function translationReducer(state = initialState, action: ActionsUnion) {
   switch (action.type) {
-    case ActionTypes.LoadProject:
+    case ActionTypes.LoadProject: {
       return {
         ...state,
         projects: action.payload.projects,
         currentId: action.payload.currentId,
-        currentProject: action.payload.currentProject
+        currentProject: action.payload.currentProject,
+        selectTransUnit: action.payload.selectTransUnit
       };
+    }
 
     case ActionTypes.AddProject: {
       const projects = state.projects;

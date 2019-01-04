@@ -10,11 +10,6 @@ branches:
 before_script:
   - yarn global add @angular/cli
 
-cache:
-  yarn: true
-  directories:
-    - node_modules
-
 script:
   - ng lint
   - yarn run build-site

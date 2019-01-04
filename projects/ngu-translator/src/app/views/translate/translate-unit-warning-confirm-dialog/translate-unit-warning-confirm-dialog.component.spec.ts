@@ -9,7 +9,7 @@ import {
   MatDialogModule,
   MatDialogRef
 } from '@angular/material';
-import { AppModule } from '../app.module';
+import { AppModule } from '../../../app.module';
 
 class MatDialogRefMock {}
 
@@ -32,7 +32,7 @@ describe('TranslateUnitWarningConfirmDialogComponent', () => {
 
   beforeEach(() => {
     dialog = TestBed.get(MatDialog);
-    let dialogRef = dialog.open(TranslateUnitWarningConfirmDialogComponent);
+    const dialogRef = dialog.open(TranslateUnitWarningConfirmDialogComponent);
     fixture = TestBed.createComponent(TranslateUnitWarningConfirmDialogComponent);
     component = dialogRef.componentInstance;
     fixture.detectChanges();
