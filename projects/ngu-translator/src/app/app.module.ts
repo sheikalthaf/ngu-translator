@@ -14,7 +14,7 @@ import { StoreModule } from '@ngrx/store';
 import { translationReducer } from './store/translation.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { TranslationEffect } from './store/translation.effect';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+// import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],

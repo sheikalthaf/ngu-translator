@@ -21,7 +21,10 @@ export class TranslationEffect {
   @Effect({ dispatch: false })
   SelectTransUnit$: Observable<ActionsUnion> = this.actions$.pipe(
     ofType(ActionTypes.SelectTransUnit),
-    tap(action => this.trans.selectTransUnit(action.payload))
+    map(action => {
+      this.trans.selectTransUnit(action.payload);
+      return null;
+    })
   );
 
   @Effect()
@@ -37,7 +40,10 @@ export class TranslationEffect {
   @Effect({ dispatch: false })
   selectProject$: Observable<ActionsUnion> = this.actions$.pipe(
     ofType(ActionTypes.SetCurrentProject),
-    tap(action => this.backendService.storeCurrentProjectId(action.payload.id))
+    map(action => {
+      this.backendService.storeCurrentProjectId(action.payload.id);
+      return null;
+    })
   );
 
   /**
