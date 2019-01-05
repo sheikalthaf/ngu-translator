@@ -9,12 +9,6 @@ import { debounceTime } from 'rxjs/operators';
 import { isNullOrUndefined } from 'util';
 import { NormalizedMessage } from '../../../shared/services/normalized-message';
 
-const MY_FIELD = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => NormalizedMessageInputComponent),
-  multi: true
-};
-
 /**
  * A component used as an input field for normalized message.
  */
@@ -22,7 +16,13 @@ const MY_FIELD = {
   selector: 'app-normalized-message-input',
   templateUrl: './normalized-message-input.component.html',
   styleUrls: ['./normalized-message-input.component.css'],
-  providers: [MY_FIELD]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => NormalizedMessageInputComponent),
+      multi: true
+    }
+  ]
 })
 export class NormalizedMessageInputComponent implements OnDestroy, ControlValueAccessor {
   /**

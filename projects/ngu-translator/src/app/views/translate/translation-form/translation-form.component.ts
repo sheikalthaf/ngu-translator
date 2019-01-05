@@ -78,7 +78,7 @@ export class TranslationFormComponent implements OnInit, OnChanges {
       select(fromRoot.testSelectedTransUnit),
       map(e => {
         this.translationUnitClone = e.unit;
-        this.translationFileView = e.project;
+        // this.translationFileView = e.project;
         // userRole === UserRole.REVIEWER;
         // console.log(this.translationUnit12);
         return this.translationUnitClone;

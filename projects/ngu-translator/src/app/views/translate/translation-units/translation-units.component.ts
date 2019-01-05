@@ -20,7 +20,7 @@ export class TranslationUnitsComponent implements OnInit {
   currentProject$: Observable<TranslationUnit>;
 
   constructor(private translation: TinyTranslatorService, private store: Store<fromRoot.AppState>) {
-    this.count$ = store.pipe(select(fromRoot.scrollabeTransUnits));
+    // this.count$ = store.pipe(select(fromRoot.scrollabeTransUnits));
     this.currentProject$ = store.pipe(select(fromRoot.selectTransUnit));
     // const project = this.translation.currentProject();
     // this.translationFileView = project
