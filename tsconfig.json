@@ -14,8 +14,10 @@
     "typeRoots": ["node_modules/@types"],
     "lib": ["es2018", "dom"],
     "paths": {
-      "@shared/*": ["projects/ngu-translator/src/app/shared1/*"],
-      "@ngrxstore/*": ["projects/ngu-translator/src/app/store1/*"]
+      "@shared/*": ["./projects/ngu-translator/src/app/shared/*"],
+      "@ngrxstore/*": ["./projects/ngu-translator/src/app/store/*"],
+      "ngu-db": ["dist/ngu-db"],
+      "ngu-db/*": ["dist/ngu-db/*"]
     }
   }
 }

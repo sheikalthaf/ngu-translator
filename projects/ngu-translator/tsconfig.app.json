@@ -2,10 +2,11 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/app",
+    "baseUrl": "../../projects/ngu-translator",
     "types": [],
     "paths": {
-      "@shared/*": ["./ngu-translator/src/app/shared/*"],
-      "@ngrxstore/*": ["./ngu-translator/src/app/store/*"]
+      "@shared/*": ["src/app/shared/*"],
+      "@ngrxstore/*": ["src/app/store/*"]
     }
   },
   "exclude": ["test.ts", "**/*.spec.ts"]

@@ -1,5 +1,6 @@
 import { TranslationProject } from './translation-project';
 import { Injectable } from '@angular/core';
+import { Projectss } from '@ngrxstore/reducers/interface';
 
 /**
  * Interface of BackendService.
@@ -28,6 +29,10 @@ export class BackendServiceAPI {
     });
   }
 
+  addProject(project: Projectss) {}
+  getProjects(): Projectss[] {
+    return [];
+  }
   /**
    * Store a project.
    */

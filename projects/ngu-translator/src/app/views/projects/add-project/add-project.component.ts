@@ -1,18 +1,14 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import {
-  UserRole,
-  WorkflowType,
-  TranslationProject
-} from '../../../shared/services/translation-project';
+import { UserRole, WorkflowType, TranslationProject } from '@shared/services/translation-project';
 import { FILETYPE_XTB } from 'ngx-i18nsupport-lib';
 import { isNullOrUndefined } from 'util';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { TinyTranslatorService } from '../../../shared/services/translation';
-import { Router } from '@angular/router';
 import { MatDialogRef } from '@angular/material';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../../store/translation.selectors';
-import { AddProject } from '../../../store/translation.actions';
+import { TinyTranslatorService } from '@shared/services/translation';
+import { AppState } from '@ngrxstore/reducers';
+import { Create } from '@ngrxstore/reducers/projects.actions';
+import { AddTranslations } from '@ngrxstore/translations/actions';
 
 @Component({
   selector: 'app-add-project',
@@ -120,7 +116,7 @@ export class AddProjectComponent implements OnInit {
   }
 
   public addProject(newProject = this.createdProject) {
-    this.store.dispatch(new AddProject(newProject));
+    this.store.dispatch(new AddTranslations(newProject));
     // this.translatorService.addProject(newProject);
     // this.translatorService.setCurrentProject(newProject);
     this.dialogRef.close(true);

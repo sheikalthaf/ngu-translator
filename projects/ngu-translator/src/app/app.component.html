@@ -1,10 +1,33 @@
-<div class="example-container">
-  <mat-toolbar color="primary" class="example-toolbar">
+<div class="example-container testManu">
+  <!-- <mat-toolbar color="primary" class="example-toolbar">
     <button mat-icon-button><mat-icon>menu</mat-icon></button>
     <h1 class="example-app-name" [routerLink]="['/']" routerLinkActive="router-link-active">
       Translator
     </h1>
-  </mat-toolbar>
+  </mat-toolbar> -->
+  <main>
+    <ul>
+      <li>
+        <a [routerLink]="['/']">
+          <mat-icon>home</mat-icon>
+          Home
+        </a>
+      </li>
+      <li>
+        <a [attr.href]="'https://github.com/sheikalthaf/ngu-translator'" target="_black">
+          <mat-icon>books</mat-icon>
+          GitHub
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/']">
+          <mat-icon>info</mat-icon>
+          About
+        </a>
+      </li>
+    </ul>
+  </main>
+  <section><app-projects></app-projects></section>
 
   <mat-sidenav-container class="example-sidenav-container">
     <mat-sidenav-content><router-outlet></router-outlet></mat-sidenav-content>

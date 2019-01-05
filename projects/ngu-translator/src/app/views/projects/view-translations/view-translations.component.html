@@ -1,0 +1,28 @@
+<h1 mat-dialog-title>Open a new project</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <input
+      type="text"
+      placeholder="Project name"
+      i18n-placeholder
+      matInput
+      [formControl]="name"
+      name="name"
+    />
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button
+    fxFlexAlign="center"
+    mat-raised-button
+    color="primary"
+    (click)="addProject()"
+    matTooltip="add as new project and start working"
+    i18n-matTooltip
+    [disabled]="name.invalid"
+  >
+    <mat-icon>add</mat-icon>
+    &nbsp;
+    <span i18n>Add project</span>
+  </button>
+</div>

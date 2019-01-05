@@ -1,20 +1,14 @@
-import {
-  Component,
-  forwardRef,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChange,
-  SimpleChanges,
-  Output,
-  EventEmitter
-} from '@angular/core';
-import { isNullOrUndefined } from 'util';
+import { Component, EventEmitter, forwardRef, Input, OnDestroy, Output } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { select, Store } from '@ngrx/store';
+import { AppState, selectTransUnits } from '@ngrxstore/translation.selectors';
 import { IICUMessageCategory, IICUMessageTranslation } from 'ngx-i18nsupport-lib/dist';
-import { Subscription } from 'rxjs';
-import { NormalizedMessage } from '../../../shared/services/normalized-message';
+import { untilDestroyed } from 'ngx-take-until-destroy';
+import { Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { isNullOrUndefined } from 'util';
+import { NormalizedMessage } from '../../../shared/services/normalized-message';
+
 /**
  * A component used as an input field for normalized message.
  */
@@ -30,11 +24,12 @@ import { debounceTime } from 'rxjs/operators';
     }
   ]
 })
-export class NormalizedMessageInputComponent implements OnInit, OnChanges, ControlValueAccessor {
+export class NormalizedMessageInputComponent implements OnDestroy, ControlValueAccessor {
   /**
    * The message to be edited or shown.
    */
-  @Input() message: NormalizedMessage;
+  message: NormalizedMessage;
+  @Input() messageType: 'source' | 'target';
 
   /**
    * Flag, wether the message should be shown in normalized form.
@@ -54,39 +49,52 @@ export class NormalizedMessageInputComponent implements OnInit, OnChanges, Contr
 
   editedMessage: NormalizedMessage;
   form: FormGroup;
-  subscription: Subscription;
   disabled = false;
+  current$: Observable<NormalizedMessage>;
 
   propagateChange = (_: any) => {};
 
-  constructor(private formBuilder: FormBuilder) {}
-
-  ngOnInit() {
+  constructor(private formBuilder: FormBuilder, private store: Store<AppState>) {
     this.initForm();
+    this.store
+      .pipe(
+        select(selectTransUnits),
+        untilDestroyed(this)
+      )
+      .subscribe(e => {
+        this.message =
+          this.messageType === 'target' ? e.targetContentNormalized() : e.sourceContentNormalized();
+        this.oChanges();
+      });
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (!isNullOrUndefined(changes['message'])) {
-      this.editedMessage = this.message.copy();
-    }
-    const isChanged =
-      !isNullOrUndefined(changes['message']) || !isNullOrUndefined(changes['normalized']);
-    if (isChanged) {
-      this.initForm();
-    }
+  ngOnDestroy() {}
+
+  oChanges() {
+    this.editedMessage = this.message.copy();
+    this.form.patchValue({
+      displayedText: this.textToDisplay(),
+      icuMessages: this.initIcuMessagesFormArray()
+    });
+  }
+
+  undo() {
+    this.oChanges();
   }
 
   private initForm() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
     this.form = this.formBuilder.group({
       displayedText: [{ value: this.textToDisplay(), disabled: this.disabled }],
       icuMessages: this.formBuilder.array(this.initIcuMessagesFormArray())
     });
-    this.subscription = this.form.valueChanges.pipe(debounceTime(200)).subscribe(formValue => {
-      this.valueChanged(formValue);
-    });
+    this.form.valueChanges
+      .pipe(
+        debounceTime(200),
+        untilDestroyed(this)
+      )
+      .subscribe(formValue => {
+        this.valueChanged(formValue);
+      });
   }
 
   private initIcuMessagesFormArray() {

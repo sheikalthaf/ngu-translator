@@ -22,12 +22,61 @@ mat-sidenav-content {
 
 .example-container {
   display: flex;
-  flex-direction: column;
+  // flex-direction: column;
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+  &.testManu {
+    main {
+      background: #24c2f1;
+      width: 60px;
+      ul {
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        li {
+          text-align: center;
+          align-items: center;
+        }
+      }
+    }
+    section {
+      width: 150px;
+      h4 {
+        padding: 10px;
+        margin: 0;
+      }
+      ul {
+        li {
+          padding: 10px;
+          &.active {
+            background: #a9bd92;
+          }
+        }
+      }
+    }
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      li {
+        padding: 10px 0;
+        width: 100%;
+        font-size: 13px;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        a {
+          text-decoration: none;
+          color: black;
+        }
+      }
+    }
+  }
 }
 
 .example-is-mobile .example-toolbar {

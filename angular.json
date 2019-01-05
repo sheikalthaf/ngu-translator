@@ -141,6 +141,36 @@
           }
         }
       }
+    },
+    "ngu-db": {
+      "root": "projects/ngu-db",
+      "sourceRoot": "projects/ngu-db/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngu-db/tsconfig.lib.json",
+            "project": "projects/ngu-db/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngu-db/src/test.ts",
+            "tsConfig": "projects/ngu-db/tsconfig.spec.json",
+            "karmaConfig": "projects/ngu-db/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["projects/ngu-db/tsconfig.lib.json", "projects/ngu-db/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
+          }
+        }
+      }
     }
   },
   "defaultProject": "ngu-translator"

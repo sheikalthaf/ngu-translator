@@ -14,8 +14,10 @@ import { AutoTranslateSummaryReport } from './auto-translate-summary-report';
 import { TranslationUnit } from './translation-unit';
 import { map } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
-import { LoadProject } from '../../store/translation.actions';
-import { selectedProject, AppState } from '../../store/translation.selectors';
+import { LoadProject } from '@ngrxstore/translation.actions';
+import { allProjects } from '@ngrxstore/translation.selectors';
+import { AppState } from '@ngrxstore/reducers';
+import { Load } from '@ngrxstore/reducers/projects.actions';
 
 @Injectable({ providedIn: 'root' })
 export class TinyTranslatorService {
@@ -37,7 +39,7 @@ export class TinyTranslatorService {
     private autoTranslateService: AutoTranslateServiceAPI,
     private store: Store<AppState>
   ) {
-    this.store.pipe(select(selectedProject)).subscribe(e => (this._currentProject = e));
+    this.store.pipe(select(allProjects)).subscribe(e => {});
     const _projects = this.backendService.projects();
     const currentProjectId = this.backendService.currentProjectId();
     this._currentProject = currentProjectId
@@ -54,14 +56,16 @@ export class TinyTranslatorService {
       this.currentProject().translationFileView.selectTransUnit(transUnit);
     }
     this.autoTranslateService.setApiKey(this.backendService.autoTranslateApiKey());
-    this.store.dispatch(
-      new LoadProject({
-        projects: _projects,
-        currentId: currentProjectId,
-        currentProject: this._currentProject,
-        selectTransUnit: transUnit
-      })
-    );
+    // this.store.dispatch(
+    //   new LoadProject({
+    //     projects: _projects,
+    //     currentId: currentProjectId,
+    //     currentProject: this._currentProject,
+    //     selectTransUnit: transUnit
+    //   })
+    // );
+    // const ojects = this.backendService.getProjects();
+    // this.store.dispatch(new Load(ojects));
   }
 
   /**
@@ -152,6 +156,7 @@ export class TinyTranslatorService {
 
     const transUnit = this.currentProject().translationFileView.nextTransUnit();
     this.backendService.storeCurrentTransUnitId(transUnit.id());
+    return transUnit;
   }
 
   /**
