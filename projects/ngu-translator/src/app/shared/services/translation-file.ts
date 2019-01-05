@@ -322,6 +322,19 @@ export class TranslationFile {
     return JSON.stringify(serializedObject);
   }
 
+  public serializeTest(): any {
+    const serializedObject: ISerializedTranslationFile = {
+      name: this.name,
+      size: this.size,
+      fileContent: this.fileContent,
+      editedContent: this.editedContent(),
+      masterContent: this.masterContent,
+      masterName: this._masterName,
+      explicitSourceLanguage: this._explicitSourceLanguage
+    };
+    return serializedObject;
+  }
+
   /**
    * Auto translate this file via Google Translate.
    * Translates all untranslated units.

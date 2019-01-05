@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BackendServiceAPI } from './backend-service-api';
 import { TranslationProject } from './translation-project';
+import { Projectss } from '@ngrxstore/reducers/interface';
 
 @Injectable()
 export class BackendLocalStorageService extends BackendServiceAPI {
   private PRAEFIX = 'tinytranslator.';
   private PRAEFIX_PROJECT = this.PRAEFIX + 'project.';
+  private PRAEFIX_PROJECTS = this.PRAEFIX + 'projects.';
   private KEY_CURRENT_PROJECT_ID = this.PRAEFIX + 'currentproject.id';
   private KEY_CURRENT_TRANSUNIT_ID = this.PRAEFIX + 'currenttransunit.id';
   private KEY_APIKEY = this.PRAEFIX + 'googletranslate.apikey';
@@ -15,6 +17,26 @@ export class BackendLocalStorageService extends BackendServiceAPI {
     if (!localStorage) {
       throw new Error('oops, local storage not supported');
     }
+  }
+
+  /**
+   * Store a project.
+   */
+  addProject(project: Projectss) {
+    if (!project.id) {
+      project.id = BackendServiceAPI.generateUUID();
+    }
+    localStorage.setItem(this.keyForProjects(project), JSON.stringify(project));
+  }
+
+  /**
+   * Store a project.
+   */
+  getProjects(): Projectss[] {
+    const projectKeys = this.getProjectKeys(this.PRAEFIX_PROJECTS);
+    return projectKeys
+      .map(key => JSON.parse(localStorage.getItem(key)))
+      .sort((p1, p2) => p1.name.localeCompare(p2.name));
   }
 
   /**
@@ -110,11 +132,15 @@ export class BackendLocalStorageService extends BackendServiceAPI {
     return this.PRAEFIX_PROJECT + project.id;
   }
 
-  private getProjectKeys(): string[] {
+  private keyForProjects(project: Projectss) {
+    return this.PRAEFIX_PROJECTS + project.id;
+  }
+
+  private getProjectKeys(masterKey = this.PRAEFIX_PROJECT): string[] {
     const result = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
-      if (key && key.startsWith(this.PRAEFIX_PROJECT)) {
+      if (key && key.startsWith(masterKey)) {
         result.push(key);
       }
     }

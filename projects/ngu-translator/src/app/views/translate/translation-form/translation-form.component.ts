@@ -8,20 +8,21 @@ import {
   SimpleChange,
   OnChanges
 } from '@angular/core';
-import { TranslationFileView } from '../../../shared/services/translation-file-view';
-import { TranslationUnit } from '../../../shared/services/translation-unit';
-import { WorkflowType } from '../../../shared/services/translation-project';
+import { TranslationFileView } from '@shared/services/translation-file-view';
+import { TranslationUnit } from '@shared/services/translation-unit';
+import { WorkflowType, UserRole } from '@shared/services/translation-project';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { NormalizedMessage } from '../../../shared/services/normalized-message';
+import { NormalizedMessage } from '@shared/services/normalized-message';
 import { MatDialog, MatSnackBar } from '@angular/material';
-import { AutoTranslateServiceAPI } from '../../../shared/services/auto-translate-service-api';
+import { AutoTranslateServiceAPI } from '@shared/services/auto-translate-service-api';
 import { isNullOrUndefined } from 'util';
 import { STATE_FINAL, STATE_TRANSLATED } from 'ngx-i18nsupport-lib';
 import { Observable, of } from 'rxjs';
 import { TranslateUnitWarningConfirmDialogComponent } from '../translate-unit-warning-confirm-dialog/translate-unit-warning-confirm-dialog.component';
 import { map, shareReplay } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
-import * as fromRoot from '../../../store/translation.selectors';
+import * as fromRoot from '@ngrxstore/translation.selectors';
+import { AppState } from '@ngrxstore/reducers';
 
 export enum NavigationDirection {
   NEXT,
@@ -42,7 +43,8 @@ export interface TranslateUnitChange {
 export class TranslationFormComponent implements OnInit, OnChanges {
   @Input() translationFileView: TranslationFileView;
 
-  @Input() translationUnit12: TranslationUnit;
+  @Input() translationUnitClone: TranslationUnit;
+
   altertranslationUnit: Observable<TranslationUnit>;
 
   @Input() workflowType: WorkflowType;
@@ -70,15 +72,16 @@ export class TranslationFormComponent implements OnInit, OnChanges {
     private dialog: MatDialog,
     private _snackbar: MatSnackBar,
     private autoTranslateService: AutoTranslateServiceAPI,
-    private store: Store<fromRoot.AppState>
+    private store: Store<AppState>
   ) {
     this.altertranslationUnit = this.store.pipe(
       select(fromRoot.testSelectedTransUnit),
       map(e => {
-        this.translationUnit12 = e.unit;
+        this.translationUnitClone = e.unit;
         this.translationFileView = e.project;
+        // userRole === UserRole.REVIEWER;
         // console.log(this.translationUnit12);
-        return this.translationUnit12;
+        return this.translationUnitClone;
       })
     );
   }
@@ -118,81 +121,49 @@ export class TranslationFormComponent implements OnInit, OnChanges {
   }
 
   public transUnitID(): string {
-    if (this.translationUnit12) {
-      return this.translationUnit12.id();
-    } else {
-      return '';
-    }
+    return this.translationUnitClone.id() || '';
   }
 
   public targetState(): string {
-    if (this.translationUnit12) {
-      return this.translationUnit12.targetState();
-    } else {
-      return '';
-    }
+    return this.translationUnitClone.targetState() || '';
   }
 
   public targetLanguage(): string {
-    if (this.translationUnit12) {
-      return this.translationUnit12.translationFile().targetLanguage();
-    } else {
-      return '';
-    }
+    return this.translationUnitClone.translationFile().targetLanguage() || '';
   }
 
   public sourceContent(): string {
-    if (this.translationUnit12) {
-      return this.translationUnit12.sourceContent();
-    } else {
-      return '';
-    }
+    return this.translationUnitClone.sourceContent() || '';
   }
 
   public sourceContentNormalized(): NormalizedMessage {
-    if (this.translationUnit12) {
-      return this.translationUnit12.sourceContentNormalized();
-    } else {
-      return null;
-    }
+    return this.translationUnitClone.sourceContentNormalized() || null;
   }
 
   public editedTargetContentNormalized(): NormalizedMessage {
     if (isNullOrUndefined(this._editableTargetMessage)) {
-      if (this.translationUnit12) {
-        this._editableTargetMessage = this.translationUnit12.targetContentNormalized();
+      if (this.translationUnitClone) {
+        this._editableTargetMessage = this.translationUnitClone.targetContentNormalized();
       }
     }
     return this._editableTargetMessage;
   }
 
   public sourceLanguage(): string {
-    if (this.translationUnit12) {
-      return this.translationUnit12.translationFile().sourceLanguage();
-    } else {
-      return '';
-    }
+    return this.translationUnitClone.translationFile().sourceLanguage() || '';
   }
 
   public sourceDescription(): string {
-    if (this.translationUnit12) {
-      return this.translationUnit12.description();
-    } else {
-      return '';
-    }
+    return this.translationUnitClone.description() || '';
   }
 
   public sourceMeaning(): string {
-    if (this.translationUnit12) {
-      return this.translationUnit12.meaning();
-    } else {
-      return '';
-    }
+    return this.translationUnitClone.meaning() || '';
   }
 
   public sourceRef(): string {
-    if (this.translationUnit12) {
-      const refs = this.translationUnit12.sourceReferences();
+    if (this.translationUnitClone) {
+      const refs = this.translationUnitClone.sourceReferences();
       if (refs.length > 0) {
         return refs[0].sourcefile + ':' + refs[0].linenumber;
       }
@@ -218,49 +189,41 @@ export class TranslationFormComponent implements OnInit, OnChanges {
   }
 
   errors(): any[] {
-    if (!this._editedTargetMessage) {
-      return [];
-    }
+    if (!this._editedTargetMessage) return [];
+
     const errors = this._editedTargetMessage.validate(this.showNormalized);
-    if (errors) {
-      return Object.keys(errors).map(key => errors[key]);
-    } else {
-      return [];
-    }
+
+    return errors ? Object.keys(errors).map(key => errors[key]) : [];
   }
 
   warnings(): any[] {
-    if (!this._editedTargetMessage) {
-      return [];
-    }
+    if (!this._editedTargetMessage) return [];
+
     const errors = this._editedTargetMessage.validateWarnings(this.showNormalized);
-    if (errors) {
-      return Object.keys(errors).map(key => errors[key]);
-    } else {
-      return [];
-    }
+
+    return errors ? Object.keys(errors).map(key => errors[key]) : [];
   }
 
   commitChanges(navigationDirection: NavigationDirection) {
-    if (this.translationUnit12) {
+    if (this.translationUnitClone) {
       if (this.isTranslationChanged() || this.isMarkedAsTranslated || this.isMarkedAsReviewed) {
-        this.translationUnit12.translate(this._editedTargetMessage);
+        this.translationUnitClone.translate(this._editedTargetMessage);
         switch (this.workflowType) {
           case WorkflowType.SINGLE_USER:
-            this.translationUnit12.setTargetState(STATE_FINAL);
+            this.translationUnitClone.setTargetState(STATE_FINAL);
             break;
           case WorkflowType.WITH_REVIEW:
             if (this.isMarkedAsReviewed) {
-              this.translationUnit12.setTargetState(STATE_FINAL);
+              this.translationUnitClone.setTargetState(STATE_FINAL);
             } else {
-              this.translationUnit12.setTargetState(STATE_TRANSLATED);
+              this.translationUnitClone.setTargetState(STATE_TRANSLATED);
             }
             break;
         }
-        this.changed.emit({
-          changedUnit: this.translationUnit12,
-          navigationDirection: navigationDirection
-        });
+        // this.changed.emit({
+        //   changedUnit: this.translationUnitClone,
+        //   navigationDirection: navigationDirection
+        // });
         this.isMarkedAsTranslated = false;
         this.isMarkedAsReviewed = false;
       } else {
@@ -270,7 +233,7 @@ export class TranslationFormComponent implements OnInit, OnChanges {
   }
 
   public isTranslationChanged(): boolean {
-    const original = this.translationUnit12.targetContent();
+    const original = this.translationUnitClone.targetContent();
     if (isNullOrUndefined(this._editedTargetMessage)) {
       return false;
     }
@@ -293,10 +256,10 @@ export class TranslationFormComponent implements OnInit, OnChanges {
   }
 
   undo() {
-    this._editableTargetMessage = this.translationUnit12.targetContentNormalized().copy();
+    this._editableTargetMessage = this.translationUnitClone.targetContentNormalized().copy();
     this._editedTargetMessage = this._editableTargetMessage;
     this.changed.emit({
-      changedUnit: this.translationUnit12,
+      changedUnit: this.translationUnitClone,
       navigationDirection: NavigationDirection.STAY
     });
   }
@@ -335,7 +298,7 @@ export class TranslationFormComponent implements OnInit, OnChanges {
    * Go to the next trans unit.
    */
   public next() {
-    if (this.translationUnit12) {
+    if (this.translationUnitClone) {
       this.openConfirmWarningsDialog().subscribe(result => {
         switch (result) {
           case 'cancel':
@@ -361,7 +324,7 @@ export class TranslationFormComponent implements OnInit, OnChanges {
    * @return {boolean}
    */
   public hasNext(): boolean {
-    if (this.translationUnit12) {
+    if (this.translationUnitClone) {
       return this.translationFileView.hasNext();
     } else {
       return false;
@@ -369,7 +332,7 @@ export class TranslationFormComponent implements OnInit, OnChanges {
   }
 
   public prev() {
-    if (this.translationUnit12) {
+    if (this.translationUnitClone) {
       this.openConfirmWarningsDialog().subscribe(result => {
         switch (result) {
           case 'cancel':
@@ -391,7 +354,7 @@ export class TranslationFormComponent implements OnInit, OnChanges {
   }
 
   public hasPrev(): boolean {
-    if (this.translationUnit12) {
+    if (this.translationUnitClone) {
       return this.translationFileView.hasPrev();
     } else {
       return false;
@@ -412,20 +375,20 @@ export class TranslationFormComponent implements OnInit, OnChanges {
         this._editableTargetMessage = translatedMessage;
         this._editedTargetMessage = translatedMessage;
         this.changed.emit({
-          changedUnit: this.translationUnit12,
+          changedUnit: this.translationUnitClone,
           navigationDirection: NavigationDirection.STAY
         });
       });
   }
 
   autoTranslateDisabled(): Observable<boolean> {
-    if (!this.translationUnit12) {
+    if (!this.translationUnitClone) {
       return of(true);
     }
     return this.autoTranslateService
       .canAutoTranslate(
-        this.translationUnit12.translationFile().sourceLanguage(),
-        this.translationUnit12.translationFile().targetLanguage()
+        this.translationUnitClone.translationFile().sourceLanguage(),
+        this.translationUnitClone.translationFile().targetLanguage()
       )
       .pipe(map(val => !val));
   }

@@ -1,13 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ProjectsModule } from './views/projects/projects.module';
-
-// const test = () => ProjectsModule;
 
 const routes: Routes = [
   {
     path: '',
-    loadChildren: './views/projects/projects.module#ProjectsModule'
+    loadChildren: './views/translations/translations.module#TranslationsModule'
   },
   {
     path: 'translate',

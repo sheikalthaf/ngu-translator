@@ -1,9 +1,34 @@
-<h1>Projects</h1>
-<mat-card *ngFor="let item of (count$ | async)" (click)="openProject(item)">
-  <h3>{{ item.name }}</h3>
+<!-- <h1>Projects</h1> -->
+<!-- <mat-card *ngFor="let project of (projects$ | async)">
+  <h3>{{ project.name }}</h3>
+</mat-card> -->
+<!-- <mat-card *ngFor="let project of (projects$ | async)">
+  <h3>{{ project.name }}</h3>
   <app-translation-file-status
-    [translationFileView]="item.translationFileView"
-    [translationFile]="item.translationFile"
+    [translationFileView]="project.translationFileView"
+    [translationFile]="project.translationFile"
   ></app-translation-file-status>
-</mat-card>
-<button mat-fab (click)="addProjects()">+</button>
+  <button
+    mat-icon-button
+    (click)="deleteProject(project)"
+    matTooltip="Delete Project"
+    i18n-matTooltip
+  >
+    <mat-icon>delete</mat-icon>
+  </button>
+  <button mat-fab (click)="openProject(project)" matTooltip="Start Translation" i18n-matTooltip>
+    <mat-icon>translate</mat-icon>
+  </button>
+</mat-card> -->
+
+<h4>Projects</h4>
+<ul>
+  <li
+    *ngFor="let item of (projects$ | async)"
+    (click)="setCurrentProject(item)"
+    [class.active]="(currentProjectId$ | async) == item.id"
+  >
+    {{ item.name }}
+  </li>
+</ul>
+<button mat-fab class="addBtn" (click)="viewProjects()">+</button>

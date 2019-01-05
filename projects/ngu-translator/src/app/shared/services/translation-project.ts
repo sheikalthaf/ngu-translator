@@ -85,6 +85,17 @@ export class TranslationProject {
     return JSON.stringify(serializedObject);
   }
 
+  public serializeTest(): any {
+    const serializedObject = {
+      id: this.id,
+      name: this.name,
+      translationFile: this.translationFile.serializeTest(),
+      workflowType: this.workflowType,
+      userRole: this.userRole
+    };
+    return serializedObject;
+  }
+
   get name(): string {
     return this._name;
   }

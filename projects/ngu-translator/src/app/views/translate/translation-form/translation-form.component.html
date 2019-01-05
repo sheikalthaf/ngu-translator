@@ -30,7 +30,7 @@
         <app-normalized-message-input
           [readonly]="true"
           [normalized]="showNormalized"
-          [message]="sourceContentNormalized()"
+          [messageType]="'source'"
         ></app-normalized-message-input>
         <p *ngIf="sourceDescription()">
           <b i18n>Description</b>
@@ -72,14 +72,14 @@
           fxFlexAlign="start"
           mat-button
           color="accent"
-          (click)="undo()"
+          (click)="editorInp.undo(); undo()"
           [disabled]="!isTranslationChanged()"
           matTooltip="undo changes"
           i18n-matTooltip
         >
           <mat-icon>undo</mat-icon>
         </button>
-        <button
+        <!-- <button
           *ngIf="!reviewMode"
           mat-mini-fab
           fxFlexAlign="start"
@@ -91,13 +91,14 @@
           i18n-matTooltip
         >
           <mat-icon>g_translate</mat-icon>
-        </button>
+        </button> -->
       </div>
       <app-normalized-message-input
+        #editorInp
         id="translationinput"
         [readonly]="reviewMode"
         [normalized]="showNormalized"
-        [message]="editedTargetContentNormalized()"
+        [messageType]="'target'"
         formControlName="_editedTargetMessage"
         (accept)="next()"
       ></app-normalized-message-input>
