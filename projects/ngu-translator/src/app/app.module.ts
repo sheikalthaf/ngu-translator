@@ -20,6 +20,10 @@ import { IdbService } from '@ngrxstore/idb.service';
 import { ProjectsModule } from './views/projects/projects.module';
 // import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
+export function idb() {
+  return new RxiDB('ngi18n-store', 1, 'translation');
+}
+
 @NgModule({
   declarations: [AppComponent, HomeComponent],
   imports: [
@@ -38,7 +42,7 @@ import { ProjectsModule } from './views/projects/projects.module';
   ],
   providers: [
     { provide: BackendServiceAPI, useClass: BackendLocalStorageService },
-    { provide: IdbService, useFactory: () => new RxiDB('ngi18n-store', 1, 'translation') }
+    { provide: IdbService, useFactory: idb }
   ],
   bootstrap: [AppComponent]
 })
