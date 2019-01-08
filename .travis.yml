@@ -12,7 +12,7 @@ before_script:
 
 script:
   - ng lint
-  - yarn run build-site
+  - yarn run build:modern
 
 deploy:
   provider: pages
