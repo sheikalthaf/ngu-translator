@@ -13,8 +13,8 @@
     "format:fix": "pretty-quick --staged",
     "format:all": "prettier --config ./.prettierrc --write \"projects/ngu-translator/src/{app,environments}/**/*{.ts,.js,.json,.css,.scss}\"",
     "build-site": "yarn run cp-file && ng build --project ngu-translator --prod --base-href https://sheikalthaf.github.io/ngu-translator/",
-    "build:modern": "yarn run cp-file && ng build --plugin ngx-build-modern --prod",
-    "build:modern:ngu-translator": "ng build --plugin ngx-build-modern --project ngu-translator --prod"
+    "build:modern": "yarn run cp-file && ng build --plugin ngx-build-modern --prod --base-href https://sheikalthaf.github.io/ngu-translator/",
+    "build:modern:ngu-translator": "yarn run cp-file && ng build --plugin ngx-build-modern --project ngu-translator --prod --base-href https://sheikalthaf.github.io/ngu-translator/"
   },
   "private": true,
   "dependencies": {
