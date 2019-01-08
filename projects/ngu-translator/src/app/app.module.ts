@@ -18,6 +18,8 @@ import { ProjectEffect } from '@ngrxstore/reducers/projects.effects';
 import { RxiDB } from '@ngrxstore/RxIDB';
 import { IdbService } from '@ngrxstore/idb.service';
 import { ProjectsModule } from './views/projects/projects.module';
+import { ThemeModule, lightTheme, darkTheme } from './theme';
+import { THEMES, ACTIVE_THEME } from './theme/symbols';
 // import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 export function idb() {
@@ -38,9 +40,12 @@ export function idb() {
     //   maxAge: 2, // Retains last 25 states
     //   logOnly: environment.production // Restrict extension to log-only mode
     // }),
-    ProjectsModule
+    ProjectsModule,
+    ThemeModule
   ],
   providers: [
+    { provide: THEMES, useValue: [lightTheme, darkTheme] },
+    { provide: ACTIVE_THEME, useValue: 'dark' },
     { provide: BackendServiceAPI, useClass: BackendLocalStorageService },
     { provide: IdbService, useFactory: idb }
   ],

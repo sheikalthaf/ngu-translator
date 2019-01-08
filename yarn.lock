@@ -2129,6 +2129,11 @@ css-selector-tokenizer@^0.7.0:
     fastparse "^1.1.1"
     regexpu-core "^1.0.0"
 
+css-vars-ponyfill@^1.16.2:
+  version "1.16.2"
+  resolved "https://registry.yarnpkg.com/css-vars-ponyfill/-/css-vars-ponyfill-1.16.2.tgz#4573d896ff29454e5cb263f2ea1bad56d93c1ed2"
+  integrity sha512-cnF2KwwMPjU+P5jgDnPv/o+RioqDyjw81YNLki3rEPDp28xYE0zjpN23RaFF/pimmS4G4MG1eJtSYGaf19mvyw==
+
 cssauron@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/cssauron/-/cssauron-1.4.0.tgz#a6602dff7e04a8306dc0db9a551e92e8b5662ad8"
