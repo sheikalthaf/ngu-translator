@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { ThemeService } from './theme.service';
 import { ThemeDirective } from './theme.directive';
 import { THEMES, ACTIVE_THEME, ThemeOptions } from './symbols';
+import { ThemeComponent } from './alternative/theme.component';
 
 @NgModule({
   imports: [CommonModule],
   providers: [ThemeService],
-  declarations: [ThemeDirective],
+  declarations: [ThemeDirective, ThemeComponent],
   exports: [ThemeDirective]
 })
 export class ThemeModule {

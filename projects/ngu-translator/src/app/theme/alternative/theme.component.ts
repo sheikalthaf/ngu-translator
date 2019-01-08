@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ThemingService } from './theming.service';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'theme',
   templateUrl: './theme.component.html'
 })
