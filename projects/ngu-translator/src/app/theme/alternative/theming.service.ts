@@ -5,7 +5,7 @@ import cssVars from 'css-vars-ponyfill';
  * Service that handles dynamic theming throughout the application.
  * Uses cssVars to polyfill IE11 as it does not support plain CSS variables
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ThemingService {
   /**
    * Initialize CSS Variables and apply default styles if they were set by any stylesheet already

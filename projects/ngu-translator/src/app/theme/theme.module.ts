@@ -12,19 +12,19 @@ import { THEMES, ACTIVE_THEME, ThemeOptions } from './symbols';
   exports: [ThemeDirective]
 })
 export class ThemeModule {
-  static forRoot(options: ThemeOptions): ModuleWithProviders {
-    return {
-      ngModule: ThemeModule,
-      providers: [
-        {
-          provide: THEMES,
-          useValue: options.themes
-        },
-        {
-          provide: ACTIVE_THEME,
-          useValue: options.active
-        }
-      ]
-    };
-  }
+  // static forRoot(options: ThemeOptions): ModuleWithProviders {
+  //   return {
+  //     ngModule: ThemeModule,
+  //     providers: [
+  //       {
+  //         provide: THEMES,
+  //         useValue: options.themes
+  //       },
+  //       {
+  //         provide: ACTIVE_THEME,
+  //         useValue: options.active
+  //       }
+  //     ]
+  //   };
+  // }
 }

@@ -19,6 +19,8 @@ import { RxiDB } from '@ngrxstore/RxIDB';
 import { IdbService } from '@ngrxstore/idb.service';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ProjectsModule } from './views/projects/projects.module';
+import { ThemeModule, lightTheme, darkTheme } from './theme';
+import { THEMES, ACTIVE_THEME } from './theme/symbols';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -30,13 +32,16 @@ import { ProjectsModule } from './views/projects/projects.module';
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     StoreModule.forRoot(reducerss),
     EffectsModule.forRoot([ProjectEffect, TranslationEffect]),
-    StoreDevtoolsModule.instrument({
-      maxAge: 2, // Retains last 25 states
-      logOnly: environment.production // Restrict extension to log-only mode
-    }),
-    ProjectsModule
+    // StoreDevtoolsModule.instrument({
+    //   maxAge: 2, // Retains last 25 states
+    //   logOnly: environment.production // Restrict extension to log-only mode
+    // }),
+    ProjectsModule,
+    ThemeModule
   ],
   providers: [
+    { provide: THEMES, useValue: [lightTheme, darkTheme] },
+    { provide: ACTIVE_THEME, useValue: 'light' },
     { provide: BackendServiceAPI, useClass: BackendLocalStorageService },
     { provide: IdbService, useFactory: () => new RxiDB('ngi18n-store', 1, 'translation') }
   ],
