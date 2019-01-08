@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { TinyTranslatorService } from '../../../shared/services/translation';
-import { TranslationFileView } from '../../../shared/services/translation-file-view';
-import { TranslationUnit } from '../../../shared/services/translation-unit';
-import { SelectTransUnit } from '../../../store/translation.actions';
-import * as fromRoot from '../../../store/translation.selectors';
+import { TinyTranslatorService } from '@shared/services/translation';
+import { TranslationUnit } from '@shared/services/translation-unit';
+import * as tfile from '@ngrxstore/translationFiles';
+import * as fromRoot from '@ngrxstore/translation.selectors';
+import { TranslationProject } from '@shared/services';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-translation-units',
@@ -17,11 +18,11 @@ export class TranslationUnitsComponent implements OnInit {
   // translationFileView: TranslationFileView;
   // transUnits: TranslationUnit[];
   count$: Observable<TranslationUnit[]>;
-  currentProject$: Observable<TranslationUnit>;
+  currentProject$: Observable<TranslationUnit[]>;
 
   constructor(private translation: TinyTranslatorService, private store: Store<fromRoot.AppState>) {
     // this.count$ = store.pipe(select(fromRoot.scrollabeTransUnits));
-    this.currentProject$ = store.pipe(select(fromRoot.selectTransUnit));
+    this.count$ = store.pipe(select(tfile.scrollabeTransUnits));
     // const project = this.translation.currentProject();
     // this.translationFileView = project
     //   ? project.translationFileView
@@ -39,6 +40,6 @@ export class TranslationUnitsComponent implements OnInit {
   // }
 
   public selectTransUnit(tu: TranslationUnit) {
-    this.store.dispatch(new SelectTransUnit(tu));
+    // this.store.dispatch(new SelectTransUnit(tu));
   }
 }

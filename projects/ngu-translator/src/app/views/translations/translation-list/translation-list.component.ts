@@ -8,6 +8,7 @@ import { TranslationProject } from '@shared/services';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ProjectService } from '../../projects/projects.service';
+import * as rFile from '@ngrxstore/translationFiles/actions';
 
 @Component({
   selector: 'app-translation-list',
@@ -33,7 +34,7 @@ export class TranslationListComponent implements OnInit {
   ngOnInit() {}
 
   openProject(project: TranslationProject) {
-    this.store.dispatch(new SetCurrentProject(project));
+    this.store.dispatch(new rFile.LoadTranslationFiles(project));
     this.router.navigate(['/translate']);
   }
 

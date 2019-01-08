@@ -2,15 +2,17 @@ import { Action } from '@ngrx/store';
 import { TranslationProject } from '@shared/services';
 
 export enum ActionTypes {
-  LOAD_TRANSLATION_FILES = '[Counter Component] Load Translations',
-  ADD_TRANSLATION_FILE = '[Counter Component] Add Translations',
-  UPDATE_TRANSLATION_FILE = '[Counter Component] Update Translations',
-  DELETE_TRANSLATION_FILE = '[Counter Component] Delete Translations'
+  LOAD_TRANSLATION_FILES = '[Counter Component] Load Translations Files',
+  ADD_TRANSLATION_FILE = '[Counter Component] Add Translations Files',
+  UPDATE_TRANSLATION_FILE = '[Counter Component] Update Translations Files',
+  DELETE_TRANSLATION_FILE = '[Counter Component] Delete Translations Files'
 }
 
 export class LoadTranslationFiles implements Action {
   readonly type = ActionTypes.LOAD_TRANSLATION_FILES;
-  constructor(public payload: TranslationProject) {}
+  constructor(public payload: TranslationProject) {
+    console.log(payload);
+  }
 }
 
 export class AddTranslationFile implements Action {

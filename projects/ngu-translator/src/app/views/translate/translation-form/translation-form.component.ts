@@ -23,6 +23,7 @@ import { map, shareReplay } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 import * as fromRoot from '@ngrxstore/translation.selectors';
 import { AppState } from '@ngrxstore/reducers';
+import * as rFile from '@ngrxstore/translationFiles/selectors';
 
 export enum NavigationDirection {
   NEXT,
@@ -75,13 +76,13 @@ export class TranslationFormComponent implements OnInit, OnChanges {
     private store: Store<AppState>
   ) {
     this.altertranslationUnit = this.store.pipe(
-      select(fromRoot.testSelectedTransUnit),
+      select(rFile.getTranslationState),
       map(e => {
-        this.translationUnitClone = e.unit;
+        // this.translationUnitClone = e;
         // this.translationFileView = e.project;
         // userRole === UserRole.REVIEWER;
         // console.log(this.translationUnit12);
-        return this.translationUnitClone;
+        return null;
       })
     );
   }

@@ -5,8 +5,10 @@ const initialState: TranslationProject = null;
 
 export function translationFileReducer(state = initialState, action: ActionUnion) {
   switch (action.type) {
-    case ActionTypes.LOAD_TRANSLATION_FILES:
+    case ActionTypes.LOAD_TRANSLATION_FILES: {
+      console.log(action.payload);
       return action.payload;
+    }
 
     case ActionTypes.ADD_TRANSLATION_FILE: {
       return action.payload;

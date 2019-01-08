@@ -4,13 +4,14 @@ import { TranslationProject, TranslationUnit } from '@shared/services';
 import { counterReducer } from '@ngrxstore/currentProject';
 import { translationFilesReducer, TranslationsFiles } from '@ngrxstore/translations';
 import { translationFileReducer } from '@ngrxstore/translationFiles';
+import { translationUnitReducer } from '@ngrxstore/current-trans-unit';
 
 export interface AppState {
   projects: State;
   currentId: string;
-  selectTransUnit: TranslationUnit;
-  currentTranslation: TranslationProject;
   currentProject: TranslationsFiles;
+  currentTranslation: TranslationProject;
+  currentTransUnit: TranslationUnit;
 }
 
 export const reducerss: ActionReducerMap<AppState> = {
@@ -18,5 +19,5 @@ export const reducerss: ActionReducerMap<AppState> = {
   currentId: counterReducer,
   currentProject: translationFilesReducer,
   currentTranslation: translationFileReducer,
-  selectTransUnit: null
+  currentTransUnit: translationUnitReducer
 };
