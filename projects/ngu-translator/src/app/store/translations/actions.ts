@@ -1,17 +1,17 @@
 import { Action } from '@ngrx/store';
-import { TranslationsFile } from './reducer';
 import { TranslationProject } from '@shared/services';
 
 export enum ActionTypes {
   LOAD_TRANSLATIONS = '[Counter Component] Load Translations',
   ADD_TRANSLATIONS = '[Counter Component] Add Translations',
   UPDATE_TRANSLATIONS = '[Counter Component] Update Translations',
-  DELETE_TRANSLATIONS = '[Counter Component] Delete Translations'
+  DELETE_TRANSLATIONS = '[Counter Component] Delete Translations',
+  DOWNLOAD_TRANSLATIONS = '[Counter Component] Download Translations'
 }
 
 export class LoadTranslations implements Action {
   readonly type = ActionTypes.LOAD_TRANSLATIONS;
-  constructor(public payload: TranslationsFile[]) {}
+  constructor(public payload: TranslationProject[]) {}
 }
 
 export class AddTranslations implements Action {
@@ -21,7 +21,7 @@ export class AddTranslations implements Action {
 
 export class UpdateTranslations implements Action {
   readonly type = ActionTypes.UPDATE_TRANSLATIONS;
-  constructor(public payload: TranslationsFile) {}
+  constructor(public payload: TranslationProject) {}
 }
 
 export class DeleteTranslations implements Action {
@@ -29,4 +29,14 @@ export class DeleteTranslations implements Action {
   constructor(public payload: string) {}
 }
 
-export type Union = LoadTranslations | AddTranslations | UpdateTranslations | DeleteTranslations;
+export class DownloadTranslations implements Action {
+  readonly type = ActionTypes.DOWNLOAD_TRANSLATIONS;
+  constructor(public payload: TranslationProject) {}
+}
+
+export type ActionUnion =
+  | LoadTranslations
+  | AddTranslations
+  | UpdateTranslations
+  | DeleteTranslations
+  | DownloadTranslations;

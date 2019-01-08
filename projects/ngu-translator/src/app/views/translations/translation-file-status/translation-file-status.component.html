@@ -6,17 +6,16 @@
       Translate
       <b>from</b>
     </span>
-    &nbsp;
-    <app-language [code]="translationFile?.sourceLanguage()"></app-language>
-    &nbsp;
-    <span i18n><b>to</b></span>
-    &nbsp;
-    <app-language [code]="translationFile?.targetLanguage()"></app-language>
+    <div class="langI">
+      <app-language [code]="translationFile?.sourceLanguage()"></app-language>
+      <mat-icon>arrow_right_alt</mat-icon>
+      <app-language [code]="translationFile?.targetLanguage()"></app-language>
+    </div>
   </div>
   <div fxLayout="row" fxLayoutAlign="start center">
     <span>{{ translationFile?.name }},</span>
     <span i18n>{{ translationFile?.size }} bytes,</span>
-    <span i18n>{{ translationFile?.numberOfTransUnits }} entries</span>
+    <span i18n>{{ translationFile?.allTransUnits.length }} entries</span>
     <mat-icon
       *ngIf="translationFile?.isDirty()"
       matTooltip="There are unpublished changes"
@@ -24,7 +23,7 @@
     >
       warning
     </mat-icon>
-    <button
+    <!-- <button
       mat-icon-button
       color="primary"
       (click)="save()"
@@ -32,7 +31,7 @@
       i18n-matTooltip
     >
       <mat-icon>save</mat-icon>
-    </button>
+    </button> -->
   </div>
   <div *ngIf="translationFile?.masterName">
     <span i18n>(translation of file {{ translationFile?.masterName }})</span>
@@ -40,8 +39,8 @@
   <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
     <mat-progress-spinner
       mode="determinate"
-      [diameter]="30"
-      [strokeWidth]="5"
+      [diameter]="100"
+      [strokeWidth]="10"
       [value]="translationFile?.percentageTranslated()"
       color="accent"
     ></mat-progress-spinner>
@@ -70,7 +69,7 @@
   >
     warning
   </mat-icon>
-  <button
+  <!-- <button
     mat-icon-button
     color="primary"
     (click)="save()"
@@ -78,5 +77,5 @@
     i18n-matTooltip
   >
     <mat-icon>save</mat-icon>
-  </button>
+  </button> -->
 </div>

@@ -40,22 +40,22 @@ export class TinyTranslatorService {
     private store: Store<AppState>
   ) {
     this.store.pipe(select(allProjects)).subscribe(e => {});
-    const _projects = this.backendService.projects();
+    // const _projects = this.backendService.projects();
     const currentProjectId = this.backendService.currentProjectId();
-    this._currentProject = currentProjectId
-      ? _projects.find(project => project.id === currentProjectId)
-      : null;
+    // this._currentProject = currentProjectId
+    //   ? _projects.find(project => project.id === currentProjectId)
+    //   : null;
     // if (currentProjectId) {
     // }
-    const currentTransUnitId: string = this.backendService.currentTransUnitId();
-    let transUnit: TranslationUnit;
-    if (currentTransUnitId && this.currentProject()) {
-      transUnit = this.currentProject()
-        .translationFile.allTransUnits()
-        .find(tu => tu.id() === currentTransUnitId);
-      this.currentProject().translationFileView.selectTransUnit(transUnit);
-    }
-    this.autoTranslateService.setApiKey(this.backendService.autoTranslateApiKey());
+    // const currentTransUnitId: string = this.backendService.currentTransUnitId();
+    // let transUnit: TranslationUnit;
+    // if (currentTransUnitId && this.currentProject()) {
+    //   transUnit = this.currentProject()
+    //     .translationFile.allTransUnits()
+    //     .find(tu => tu.id() === currentTransUnitId);
+    //   this.currentProject().translationFileView.selectTransUnit(transUnit);
+    // }
+    // this.autoTranslateService.setApiKey(this.backendService.autoTranslateApiKey());
     // this.store.dispatch(
     //   new LoadProject({
     //     projects: _projects,

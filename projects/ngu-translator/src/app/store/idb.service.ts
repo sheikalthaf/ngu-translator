@@ -17,16 +17,16 @@ export class IdbService {
   }
 
   delete(key: string | number | IDBKeyRange | Date | ArrayBufferView | ArrayBuffer | IDBArrayKey) {
-    return of(this.test());
+    return of(this.void());
   }
 
   clear() {
-    return of(this.test());
+    return of(this.void());
   }
 
   keys() {
     return of([] as string[]);
   }
 
-  private test() {}
+  private void() {}
 }
