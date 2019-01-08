@@ -3,8 +3,10 @@ import { ThemeService } from './theme.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Theme } from './symbols';
+import cssVars from 'css-vars-ponyfill';
 
 @Directive({
+  // tslint:disable-next-line:directive-selector
   selector: '[theme]'
 })
 export class ThemeDirective implements OnInit, OnDestroy {
@@ -20,7 +22,7 @@ export class ThemeDirective implements OnInit, OnDestroy {
 
     this._themeService.themeChange
       .pipe(takeUntil(this._destroy$))
-      .subscribe((theme: Theme) => this.updateTheme(theme));
+      .subscribe(theme => this.updateTheme(theme));
   }
 
   ngOnDestroy() {
@@ -29,10 +31,16 @@ export class ThemeDirective implements OnInit, OnDestroy {
   }
 
   updateTheme(theme: Theme) {
+    cssVars({
+      rootElement: this._elementRef.nativeElement,
+      onlyLegacy: false,
+      variables: theme.properties,
+      onComplete: (a, b, variables) => {}
+    });
     // project properties onto the element
     // tslint:disable-next-line:forin
     for (const key in theme.properties) {
-      this._elementRef.nativeElement.style.setProperty(key, theme.properties[key]);
+      // this._elementRef.nativeElement.style.setProperty(key, theme.properties[key]);
     }
 
     // remove old theme

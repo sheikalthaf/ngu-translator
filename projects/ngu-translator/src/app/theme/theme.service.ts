@@ -1,5 +1,6 @@
 import { Injectable, Inject, EventEmitter } from '@angular/core';
 import { THEMES, ACTIVE_THEME, Theme } from './symbols';
+import cssVars from 'css-vars-ponyfill';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {

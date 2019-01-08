@@ -45,7 +45,7 @@ export function idb() {
   ],
   providers: [
     { provide: THEMES, useValue: [lightTheme, darkTheme] },
-    { provide: ACTIVE_THEME, useValue: 'light' },
+    { provide: ACTIVE_THEME, useValue: 'dark' },
     { provide: BackendServiceAPI, useClass: BackendLocalStorageService },
     { provide: IdbService, useFactory: idb }
   ],

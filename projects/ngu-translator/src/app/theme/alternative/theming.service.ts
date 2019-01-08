@@ -56,7 +56,7 @@ export class ThemingService {
     cssVars({
       onlyLegacy: false,
       variables: variables,
-      onComplete: (a, b, variables) => completeCallback && completeCallback(variables)
+      onComplete: (a, b, variabls) => completeCallback && completeCallback(variabls)
     });
   }
 }
