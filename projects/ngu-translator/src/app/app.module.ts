@@ -17,10 +17,14 @@ import { TranslationEffect } from './store/translation.effect';
 import { ProjectEffect } from '@ngrxstore/reducers/projects.effects';
 import { RxiDB } from '@ngrxstore/RxIDB';
 import { IdbService } from '@ngrxstore/idb.service';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ProjectsModule } from './views/projects/projects.module';
 import { ThemeModule, lightTheme, darkTheme } from './theme';
 import { THEMES, ACTIVE_THEME } from './theme/symbols';
+// import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
+export function idb() {
+  return new RxiDB('ngi18n-store', 1, 'translation');
+}
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -43,7 +47,7 @@ import { THEMES, ACTIVE_THEME } from './theme/symbols';
     { provide: THEMES, useValue: [lightTheme, darkTheme] },
     { provide: ACTIVE_THEME, useValue: 'light' },
     { provide: BackendServiceAPI, useClass: BackendLocalStorageService },
-    { provide: IdbService, useFactory: () => new RxiDB('ngi18n-store', 1, 'translation') }
+    { provide: IdbService, useFactory: idb }
   ],
   bootstrap: [AppComponent]
 })

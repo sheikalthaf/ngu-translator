@@ -12,7 +12,9 @@
     "precommit": "run-s format:fix",
     "format:fix": "pretty-quick --staged",
     "format:all": "prettier --config ./.prettierrc --write \"projects/ngu-translator/src/{app,environments}/**/*{.ts,.js,.json,.css,.scss}\"",
-    "build-site": "yarn run cp-file && ng build --project ngu-translator --prod --base-href https://sheikalthaf.github.io/ngu-translator/"
+    "build-site": "yarn run cp-file && ng build --project ngu-translator --prod --base-href https://sheikalthaf.github.io/ngu-translator/",
+    "build:modern": "yarn run cp-file && ng build --plugin ngx-build-modern --prod --base-href https://sheikalthaf.github.io/ngu-translator/",
+    "build:modern:ngu-translator": "yarn run cp-file && ng build --plugin ngx-build-modern --project ngu-translator --prod --base-href https://sheikalthaf.github.io/ngu-translator/"
   },
   "private": true,
   "dependencies": {
@@ -36,7 +38,10 @@
     "core-js": "^2.5.4",
     "css-vars-ponyfill": "^1.16.2",
     "file-saver": "^2.0.0",
+    "flag-icon-css": "^3.2.1",
     "idb": "^2.1.3",
+    "ngx-build-modern": "^1.1.3",
+    "ngx-build-plus": "^7.6.0",
     "ngx-i18nsupport-lib": "^1.10.2",
     "ngx-take-until-destroy": "^5.2.3",
     "rxjs": "~6.3.3",

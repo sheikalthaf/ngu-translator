@@ -1,12 +1,13 @@
 import { Projectss } from '@ngrxstore/reducers/interface';
-import { TranslationsFile } from './reducer';
+import { TranslationProject } from '@shared/services';
+export { TranslationsFiles } from './reducer';
 
-export { translationsFileReducer } from './reducer';
+export { translationFilesReducer } from './reducer';
 export * from './selectors';
-export { Union, ActionTypes } from './actions';
+export * from './actions';
 
 export interface AdTranss {
   id: string;
   current: Projectss;
-  payload: TranslationsFile;
+  payload: TranslationProject;
 }

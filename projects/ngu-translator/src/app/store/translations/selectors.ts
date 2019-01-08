@@ -1,7 +1,7 @@
 import { createFeatureSelector } from '@ngrx/store';
-import { translationAdapter } from './reducer';
+import { translationAdapter, TranslationsFiles } from './reducer';
 
-export const getProjectState = createFeatureSelector<any>('currentProject');
+export const getProjectState = createFeatureSelector<TranslationsFiles>('currentProject');
 
 export const {
   selectIds,

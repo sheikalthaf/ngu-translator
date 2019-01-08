@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Observable, combineLatest, of, merge } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { TranslationProject } from '@shared/services';
+import { combineLatest, merge, Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { LoadCurrentProject } from './currentProject/actions';
 import { IdbService } from './idb.service';
 import { Projectss } from './reducers/interface';
-import { BackendServiceAPI } from '@shared/services/backend-service-api';
-import { TranslationProject } from '@shared/services';
-import { map, switchMap } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
 import { Load } from './reducers/projects.actions';
-import { SetCurrentProject, LoadCurrentProject } from './currentProject/actions';
-import { TranslationsFile } from './translations/reducer';
+import { uuid } from './guuid';
+import { TinyTranslatorService } from '@shared/services/translation';
 
 export class Transla {
   projectIds: string[] = [];
@@ -20,18 +20,17 @@ export class Transla {
 })
 export class LocalService {
   private APP = 'appstate';
-  private PRAEFIX_PROJECT = 'project.';
-  private PRAEFIX_PROJECTS = 'project.';
-  private KEY_CURRENT_PROJECT_ID = 'currentproject.id';
-  private KEY_CURRENT_TRANSUNIT_ID = 'currenttransunit.id';
-  private KEY_APIKEY = 'googletranslate.apikey';
 
-  constructor(private idb: IdbService, private store$: Store<any>) {
+  constructor(
+    private idb: IdbService,
+    private store$: Store<any>,
+    private tiny: TinyTranslatorService
+  ) {
     if (!localStorage) {
       throw new Error('oops, local storage not supported');
     }
     combineLatest(this.getProjects(), this.getApp()).subscribe(([e, d]) => {
-      this.store$.dispatch(new Load(e));
+      e[0] && this.store$.dispatch(new Load(e));
       // const proj = e.find(s => s.id === d.currentProject);
       d.currentProject && this.store$.dispatch(new LoadCurrentProject(d.currentProject));
     });
@@ -60,7 +59,7 @@ export class LocalService {
    * Store a project.
    */
   addProject(project: Projectss) {
-    project.id = project.id || BackendServiceAPI.generateUUID();
+    project.id = project.id || uuid();
 
     return this.getApp().pipe(
       switchMap(e => {
@@ -79,7 +78,8 @@ export class LocalService {
   }
 
   getTranslations(keys: string[]) {
-    return combineLatest(...keys.map(key => this.idb.get<Projectss>(key)));
+    const obser = keys.map(key => this.idb.get<TranslationProject>(key));
+    return obser.length ? combineLatest(...obser) : of([] as TranslationProject[]);
   }
 
   /**
@@ -94,125 +94,30 @@ export class LocalService {
       }),
       map(e => e.sort((p1, p2) => p1.name.localeCompare(p2.name)))
     );
-    //   switchMap(keys => combineLatest(...keys.map(key => this.idb.get<Projectss>(key)))),
-    //   map(e => e.sort((p1, p2) => p1.name.localeCompare(p2.name)))
-    // );
   }
 
   /**
    * Store a project.
    */
   store(project: TranslationProject) {
-    project.id = project.id || BackendServiceAPI.generateUUID();
+    project.id = project.id || uuid();
 
-    return this.idb.set(project.id, project.serializeTest());
+    return this.idb.set(project.id, project.serialize());
   }
 
-  test(d: Projectss, project: TranslationProject) {
-    project.id = project.id || BackendServiceAPI.generateUUID();
+  addTranslation(d: Projectss, project: TranslationProject) {
+    project.id = project.id || uuid();
     d.translationIds.push(project.id);
     return combineLatest(this.set(d), this.store(project));
   }
 
-  /**
-   * Get all stored projects.
-   */
-  projects(): TranslationProject[] {
-    const projectKeys = this.getProjectKeys();
-    return projectKeys
-      .map(key => {
-        return TranslationProject.deserialize(localStorage.getItem(key));
-      })
-      .sort((p1, p2) => p1.name.localeCompare(p2.name));
+  deleteTranslation(d: Projectss, id: string) {
+    d.translationIds.splice(d.translationIds.findIndex(e => e === id), 1);
+    return combineLatest(this.set(d), this.idb.delete(id));
   }
 
-  /**
-   * Save id of curent project.
-   * @param id of project, null to remove.
-   */
-  storeCurrentProjectId(id: string) {
-    if (!id) {
-      return this.idb.delete(this.KEY_CURRENT_PROJECT_ID);
-    } else {
-      return this.idb.set(this.KEY_CURRENT_PROJECT_ID, id);
-    }
+  downloadTranslation(d: TranslationProject) {
+    this.tiny.saveProject(d);
+    return null;
   }
-
-  /**
-   * ID if current project.
-   * @return {string} id of current project or null
-   */
-  currentProjectId(): string {
-    return localStorage.getItem(this.KEY_CURRENT_PROJECT_ID);
-  }
-
-  /**
-   * Save ID of last active TransUnit
-   * @param tuId active unit id or null.
-   */
-  storeCurrentTransUnitId(tuId: string) {
-    if (!tuId) {
-      localStorage.removeItem(this.KEY_CURRENT_TRANSUNIT_ID);
-    } else {
-      localStorage.setItem(this.KEY_CURRENT_TRANSUNIT_ID, tuId);
-    }
-  }
-
-  /**
-   * ID of last active TransUnit
-   * @return {string} active unit or null.
-   */
-  currentTransUnitId(): string {
-    return localStorage.getItem(this.KEY_CURRENT_TRANSUNIT_ID);
-  }
-
-  deleteProject(project: TranslationProject) {
-    if (project && project.id) {
-      const key = this.keyForProject(project);
-      localStorage.removeItem(key);
-    }
-  }
-
-  /**
-   * Save API Key in store.
-   * @param key
-   */
-  storeAutoTranslateApiKey(key: string) {
-    if (!key) {
-      localStorage.removeItem(this.KEY_APIKEY);
-    } else {
-      localStorage.setItem(this.KEY_APIKEY, key);
-    }
-  }
-
-  /**
-   * Get API key from store.
-   * @return {null}
-   */
-  autoTranslateApiKey(): string {
-    return localStorage.getItem(this.KEY_APIKEY);
-  }
-
-  private keyForProject(project: TranslationProject) {
-    return this.PRAEFIX_PROJECT + project.id;
-  }
-
-  private keyForProjects(project: Projectss) {
-    return this.PRAEFIX_PROJECTS + project.id;
-  }
-
-  private getProjectKeys(masterKey = this.PRAEFIX_PROJECT): string[] {
-    const result = [];
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key && key.startsWith(masterKey)) {
-        result.push(key);
-      }
-    }
-    return result;
-  }
-
-  // private getProjectKeys1(masterKey = this.PRAEFIX_PROJECT) {
-  //   return this.idb.keys().pipe(map(key => key.filter(e => e.startsWith(masterKey))));
-  // }
 }

@@ -1,6 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TranslationFile } from '../../../shared/services/translation-file';
-import { TranslationFileView } from '../../../shared/services/translation-file-view';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ChangeDetectionStrategy
+} from '@angular/core';
+import { TranslationFile } from '@shared/services/translation-file';
+import { TranslationFileView } from '@shared/services/translation-file-view';
 // import { TranslationFile } from '../model/translation-file';
 // import { TranslationFileView } from '../model/translation-file-view';
 
@@ -11,7 +18,8 @@ import { TranslationFileView } from '../../../shared/services/translation-file-v
 @Component({
   selector: 'app-translation-file-status',
   templateUrl: './translation-file-status.component.html',
-  styleUrls: ['./translation-file-status.component.scss']
+  styleUrls: ['./translation-file-status.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TranslationFileStatusComponent implements OnInit {
   @Input() translationFile: TranslationFile;
@@ -23,19 +31,18 @@ export class TranslationFileStatusComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    // console.log(this.translationFileView);
+  }
 
   /**
    * percentage translated rounded to 0 digits.
    * @return {any}
    */
   public percentageTranslated(): string {
-    if (this.translationFile) {
-      const result: number = this.translationFile.percentageTranslated();
-      return result.toFixed(0);
-    } else {
-      return '0';
-    }
+    console.log('asdfasdfasf');
+    const result: number = this.translationFile.percentageTranslated();
+    return result.toFixed(0);
   }
 
   /**

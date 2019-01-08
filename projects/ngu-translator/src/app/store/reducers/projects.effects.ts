@@ -8,6 +8,7 @@ import * as curr from '../currentProject/actions';
 import { LocalService } from '@ngrxstore/localForage.service';
 import * as fromStore from './projects.selectors';
 import * as fromTrans from '../translations/actions';
+import * as fromTransSele from '../translations/selectors';
 import * as fromCurr from '../currentProject/selectors';
 
 @Injectable()
@@ -18,10 +19,14 @@ export class ProjectEffect {
     private store$: Store<any>
   ) {}
 
-  @Effect({ dispatch: false })
+  @Effect()
   SelectTransUnit$ = this.actions$.pipe(
     ofType(actions.CREATE),
-    switchMap(action => this.backendService.addProject(action.pizza))
+    switchMap(action =>
+      this.backendService
+        .addProject(action.pizza)
+        .pipe(map(() => new curr.SetCurrentProject(action.pizza)))
+    )
   );
 
   @Effect({ dispatch: false })
@@ -38,13 +43,11 @@ export class ProjectEffect {
     ),
     withLatestFrom(this.store$.pipe(select(fromStore.selectAll))),
     switchMap(([action, projects]) => {
-      console.log(action);
-      let translationIds;
-      if (action instanceof curr.SetCurrentProject) {
-        translationIds = (<any>action.payload).translationIds;
-      } else {
-        translationIds = projects.find(e => e.id === action.payload).translationIds;
-      }
+      const translationIds =
+        action instanceof curr.SetCurrentProject
+          ? (<any>action.payload).translationIds
+          : projects.find(e => e.id === action.payload).translationIds;
+
       return this.backendService
         .getTranslations(translationIds)
         .pipe(map(e => new fromTrans.LoadTranslations(e)));
@@ -55,6 +58,20 @@ export class ProjectEffect {
   seeTransUnit$ = this.actions$.pipe(
     ofType<fromTrans.AddTranslations>(fromTrans.ActionTypes.ADD_TRANSLATIONS),
     withLatestFrom(this.store$.pipe(select(fromCurr.currentProject))),
-    switchMap(([action, data]) => this.backendService.test(data, action.payload))
+    switchMap(([action, data]) => this.backendService.addTranslation(data, action.payload))
+  );
+
+  @Effect({ dispatch: false })
+  deleteTrans$ = this.actions$.pipe(
+    ofType<fromTrans.DeleteTranslations>(fromTrans.ActionTypes.DELETE_TRANSLATIONS),
+    withLatestFrom(this.store$.pipe(select(fromCurr.currentProject))),
+    switchMap(([action, data]) => this.backendService.deleteTranslation(data, action.payload))
+  );
+
+  @Effect({ dispatch: false })
+  downloadTrans$ = this.actions$.pipe(
+    ofType<fromTrans.DownloadTranslations>(fromTrans.ActionTypes.DOWNLOAD_TRANSLATIONS),
+    withLatestFrom(this.store$.pipe(select(fromTransSele.selectEntities))),
+    map(([action, data]) => this.backendService.downloadTranslation(action.payload))
   );
 }
