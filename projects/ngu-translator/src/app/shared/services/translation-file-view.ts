@@ -42,9 +42,9 @@ export class TranslationFileView {
     this._filter = filter;
     if (this._translationFile) {
       const oldCurrent = this._currentTransUnitIndex >= 0 ? this.currentTransUnit() : null;
-      this._scrollableTransUnits = this._translationFile
-        .allTransUnits()
-        .filter(tu => this._filter.filters(tu));
+      this._scrollableTransUnits = this._translationFile.allTransUnits.filter(tu =>
+        this._filter.filters(tu)
+      );
       if (oldCurrent) {
         this._currentTransUnitIndex = this._scrollableTransUnits.findIndex(tu => tu === oldCurrent);
       }

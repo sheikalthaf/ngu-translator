@@ -11,8 +11,7 @@ import {
   FILETYPE_XTB,
   FORMAT_XMB,
   IICUMessage,
-  IICUMessageTranslation,
-  INormalizedMessage
+  IICUMessageTranslation
 } from 'ngx-i18nsupport-lib/dist';
 import { AutoTranslateServiceAPI } from './auto-translate-service-api';
 // import { NormalizedMessage } from './normalized-message';
@@ -39,9 +38,9 @@ interface ISerializedTranslationFile {
 }
 
 export class TranslationFile {
-  private _name: string;
+  name: string;
 
-  private _size: number;
+  size: number;
 
   private _error: string = null;
 
@@ -49,7 +48,11 @@ export class TranslationFile {
 
   private masterContent: string;
 
-  private _masterName: string;
+  /**
+   * In case of xmb/xtb the name of the master xmb file.
+   * @return {string}
+   */
+  masterName: string;
 
   private _translationFile: ITranslationMessagesFile;
 
@@ -58,7 +61,8 @@ export class TranslationFile {
   /**
    * all TransUnits read from file.
    */
-  private _allTransUnits: TranslationUnit[];
+  allTransUnits: TranslationUnit[];
+  numberOfTransUnits = 0;
 
   static fromUploadedFile(
     readingUploadedFile: Observable<AsynchronousFileReaderResult>,
@@ -68,8 +72,8 @@ export class TranslationFile {
       map(contentArray => {
         const fileContent: AsynchronousFileReaderResult = contentArray[0];
         const newInstance = new TranslationFile();
-        newInstance._name = fileContent.name;
-        newInstance._size = fileContent.size;
+        newInstance.name = fileContent.name;
+        newInstance.size = fileContent.size;
         if (fileContent.content) {
           const masterXmbContent: AsynchronousFileReaderResult = contentArray[1];
           try {
@@ -82,7 +86,7 @@ export class TranslationFile {
                 encoding: null
               };
               newInstance.masterContent = masterXmbContent.content;
-              newInstance._masterName = masterXmbContent.name;
+              newInstance.masterName = masterXmbContent.name;
             }
             newInstance._translationFile = TranslationMessagesFileFactory.fromUnknownFormatFileContent(
               fileContent.content,
@@ -108,17 +112,22 @@ export class TranslationFile {
    * @param serializationString
    * @return {TranslationFile}
    */
-  static deserialize(serializationString: string): TranslationFile {
+  static deserializeTest(serializationString: string): TranslationFile {
     const deserializedObject: ISerializedTranslationFile = <ISerializedTranslationFile>(
       JSON.parse(serializationString)
     );
     return TranslationFile.fromDeserializedObject(deserializedObject);
   }
 
+  static deserialize(serializationString: TranslationFile): TranslationFile {
+    const deserializedObject: ISerializedTranslationFile = serializationString as any;
+    return TranslationFile.fromDeserializedObject(deserializedObject);
+  }
+
   static fromDeserializedObject(deserializedObject: ISerializedTranslationFile): TranslationFile {
     const newInstance = new TranslationFile();
-    newInstance._name = deserializedObject.name;
-    newInstance._size = deserializedObject.size;
+    newInstance.name = deserializedObject.name;
+    newInstance.size = deserializedObject.size;
     newInstance.fileContent = deserializedObject.fileContent;
     newInstance._explicitSourceLanguage = deserializedObject.explicitSourceLanguage;
     try {
@@ -130,7 +139,7 @@ export class TranslationFile {
           path: deserializedObject.masterName,
           encoding: encoding
         };
-        newInstance._masterName = deserializedObject.masterName;
+        newInstance.masterName = deserializedObject.masterName;
       }
       newInstance._translationFile = TranslationMessagesFileFactory.fromUnknownFormatFileContent(
         deserializedObject.editedContent,
@@ -146,36 +155,22 @@ export class TranslationFile {
   }
 
   constructor() {
-    this._allTransUnits = [];
+    this.allTransUnits = [];
   }
 
   private readTransUnits() {
-    this._allTransUnits = [];
+    const _allTransUnits = [];
     if (this._translationFile) {
       this._translationFile.forEachTransUnit((tu: ITransUnit) => {
-        this._allTransUnits.push(new TranslationUnit(this, tu));
+        _allTransUnits.push(new TranslationUnit(this, tu));
       });
     }
+    this.setTransUnits(_allTransUnits);
   }
 
-  get name(): string {
-    return this._name;
-  }
-
-  /**
-   * In case of xmb/xtb the name of the master xmb file.
-   * @return {string}
-   */
-  get masterName(): string {
-    return this._masterName;
-  }
-
-  get size(): number {
-    return this._size;
-  }
-
-  get numberOfTransUnits(): number {
-    return this._allTransUnits.length;
+  setTransUnits(data: TranslationUnit[]) {
+    this.allTransUnits = data;
+    this.numberOfTransUnits = this.allTransUnits.length;
   }
 
   get numberOfUntranslatedTransUnits(): number {
@@ -192,7 +187,7 @@ export class TranslationFile {
       return this._translationFile.fileType();
     } else {
       // try to get it by name
-      if (this._name && this._name.endsWith('xtb')) {
+      if (this.name && this.name.endsWith('xtb')) {
         return FILETYPE_XTB;
       } else {
         return null;
@@ -250,7 +245,7 @@ export class TranslationFile {
   }
 
   public hasErrors(): boolean {
-    return !isNullOrUndefined(this._error);
+    return !!this._error;
   }
 
   public canTranslate(): boolean {
@@ -258,6 +253,7 @@ export class TranslationFile {
   }
 
   get error(): string {
+    console.log('err');
     return this._error;
   }
 
@@ -274,6 +270,7 @@ export class TranslationFile {
    * @return {boolean}
    */
   public isDirty(): boolean {
+    console.log('isDirty');
     return this._translationFile && this.fileContent !== this.editedContent();
   }
 
@@ -301,9 +298,9 @@ export class TranslationFile {
    * Return all trans units found in file.
    * @return {TranslationUnit[]}
    */
-  public allTransUnits(): TranslationUnit[] {
-    return this._allTransUnits;
-  }
+  // public allTransUnits(): TranslationUnit[] {
+  //   return this._allTransUnits;
+  // }
 
   /**
    * Return a string represenation of translation file content.
@@ -316,7 +313,7 @@ export class TranslationFile {
       fileContent: this.fileContent,
       editedContent: this.editedContent(),
       masterContent: this.masterContent,
-      masterName: this._masterName,
+      masterName: this.masterName,
       explicitSourceLanguage: this._explicitSourceLanguage
     };
     return JSON.stringify(serializedObject);
@@ -329,7 +326,7 @@ export class TranslationFile {
       fileContent: this.fileContent,
       editedContent: this.editedContent(),
       masterContent: this.masterContent,
-      masterName: this._masterName,
+      masterName: this.masterName,
       explicitSourceLanguage: this._explicitSourceLanguage
     };
     return serializedObject;
@@ -368,9 +365,7 @@ export class TranslationFile {
     autoTranslateService: AutoTranslateServiceAPI
   ): Observable<AutoTranslateSummaryReport> {
     // collect all units, that should be auto translated
-    const allUntranslated: TranslationUnit[] = this.allTransUnits().filter(
-      tu => !tu.isTranslated()
-    );
+    const allUntranslated: TranslationUnit[] = this.allTransUnits.filter(tu => !tu.isTranslated());
     const allTranslatable = allUntranslated.filter(
       tu => !tu.sourceContentNormalized().isICUMessage()
     );
@@ -397,9 +392,7 @@ export class TranslationFile {
     autoTranslateService: AutoTranslateServiceAPI
   ): Observable<AutoTranslateSummaryReport>[] {
     // collect all units, that should be auto translated
-    const allUntranslated: TranslationUnit[] = this.allTransUnits().filter(
-      tu => !tu.isTranslated()
-    );
+    const allUntranslated: TranslationUnit[] = this.allTransUnits.filter(tu => !tu.isTranslated());
     const allTranslatableICU = allUntranslated.filter(
       tu => !isNullOrUndefined(tu.sourceContentNormalized().getICUMessage())
     );
