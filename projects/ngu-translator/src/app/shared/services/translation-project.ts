@@ -34,20 +34,24 @@ export enum UserRole {
  * A name and a translation file.
  */
 export class TranslationProject {
-  public id: string;
+  id: string;
 
-  private _view: TranslationFileView;
+  translationFileView: TranslationFileView;
 
-  private _userRole: UserRole;
+  userRole: UserRole;
 
-  private _autoTranslateSummaryReport: AutoTranslateSummaryReport;
+  autoTranslateSummaryReport: AutoTranslateSummaryReport;
+
+  isReviewModeActive: boolean;
+
+  workflowType: WorkflowType;
 
   /**
    * Create a project from the serialization.
    * @param serializationString
    * @return {TranslationProject}
    */
-  static deserialize(serializationString: string): TranslationProject {
+  static deserializeTest(serializationString: string): TranslationProject {
     const deserializedObject: any = JSON.parse(serializationString);
     const project = new TranslationProject(
       deserializedObject.name,
@@ -59,22 +63,32 @@ export class TranslationProject {
     return project;
   }
 
+  static deserialize(serializationString: TranslationProject): TranslationProject {
+    const deserializedObject: any = serializationString;
+    const project = new TranslationProject(
+      deserializedObject.name,
+      TranslationFile.deserialize(deserializedObject.translationFile),
+      deserializedObject.workflowType
+    );
+    project.id = deserializedObject.id;
+    project.setUserRole(deserializedObject.userRole);
+    return project;
+  }
+
   constructor(
-    private _name: string,
-    private _translationFile: TranslationFile,
+    public name: string,
+    public translationFile: TranslationFile,
     private _workflowType?: WorkflowType
   ) {
-    if (isNullOrUndefined(this._workflowType)) {
-      this._workflowType = WorkflowType.SINGLE_USER;
-    }
-    this._view = new TranslationFileView(_translationFile);
+    this.setWorkflowType(this._workflowType);
+    this.translationFileView = new TranslationFileView(translationFile);
   }
 
   /**
    * Return a string represenation of project state.
    * This will be stored in BackendService.
    */
-  public serialize(): string {
+  public serializeTest(): string {
     const serializedObject = {
       id: this.id,
       name: this.name,
@@ -85,51 +99,23 @@ export class TranslationProject {
     return JSON.stringify(serializedObject);
   }
 
-  public serializeTest(): any {
-    const serializedObject = {
+  public serialize(): any {
+    return {
       id: this.id,
       name: this.name,
       translationFile: this.translationFile.serializeTest(),
       workflowType: this.workflowType,
       userRole: this.userRole
     };
-    return serializedObject;
-  }
-
-  get name(): string {
-    return this._name;
-  }
-
-  public setName(name: string) {
-    this._name = name;
-  }
-
-  get translationFile(): TranslationFile {
-    return this._translationFile;
-  }
-
-  get translationFileView(): TranslationFileView {
-    return this._view;
-  }
-
-  get workflowType(): WorkflowType {
-    return this._workflowType ? this._workflowType : WorkflowType.SINGLE_USER;
   }
 
   public setWorkflowType(type: WorkflowType) {
-    this._workflowType = type;
-  }
-
-  get userRole(): UserRole {
-    return isNullOrUndefined(this._userRole) ? UserRole.TRANSLATOR : this._userRole;
+    this.workflowType = isNullOrUndefined(type) ? WorkflowType.SINGLE_USER : type;
   }
 
   public setUserRole(role: UserRole) {
-    this._userRole = role;
-  }
-
-  public isReviewModeActive(): boolean {
-    return this._userRole === UserRole.REVIEWER;
+    this.userRole = isNullOrUndefined(role) ? UserRole.TRANSLATOR : role;
+    this.isReviewModeActive = this.userRole === UserRole.REVIEWER;
   }
 
   public hasErrors(): boolean {
@@ -138,21 +124,5 @@ export class TranslationProject {
 
   public canTranslate(): boolean {
     return this.translationFile && this.translationFile.canTranslate();
-  }
-
-  /**
-   * Return Report about last executed Autotranslate run.
-   * @return {AutoTranslateSummaryReport}
-   */
-  public autoTranslateSummaryReport(): AutoTranslateSummaryReport {
-    return this._autoTranslateSummaryReport;
-  }
-
-  /**
-   * Store summary of last executed AutoTranslate run.
-   * @param summary
-   */
-  public setAutoTranslateSummaryReport(summary: AutoTranslateSummaryReport) {
-    this._autoTranslateSummaryReport = summary;
   }
 }

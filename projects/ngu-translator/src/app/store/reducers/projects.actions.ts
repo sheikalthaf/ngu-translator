@@ -1,7 +1,6 @@
 import { Action } from '@ngrx/store';
-import { TranslationProject } from '@shared/services';
 import { Projectss } from './interface';
-import { BackendServiceAPI } from '@shared/services/backend-service-api';
+import { uuid } from '@ngrxstore/guuid';
 
 export const CREATE = '[Pizzas] Create';
 export const UPDATE = '[Pizzas] Update';
@@ -12,7 +11,7 @@ export const SELECT_PROJECT = '[Pizzas] SELECT PROJECT';
 export class Create implements Action {
   readonly type = CREATE;
   constructor(public pizza: Projectss) {
-    pizza.id = BackendServiceAPI.generateUUID();
+    pizza.id = uuid();
   }
 }
 

@@ -56,7 +56,7 @@ export class BackendLocalStorageService extends BackendServiceAPI {
     const projectKeys = this.getProjectKeys();
     return projectKeys
       .map(key => {
-        return TranslationProject.deserialize(localStorage.getItem(key));
+        return TranslationProject.deserialize(localStorage.getItem(key) as any);
       })
       .sort((p1, p2) => p1.name.localeCompare(p2.name));
   }

@@ -17,8 +17,8 @@ import { TranslationEffect } from './store/translation.effect';
 import { ProjectEffect } from '@ngrxstore/reducers/projects.effects';
 import { RxiDB } from '@ngrxstore/RxIDB';
 import { IdbService } from '@ngrxstore/idb.service';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ProjectsModule } from './views/projects/projects.module';
+// import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -30,10 +30,10 @@ import { ProjectsModule } from './views/projects/projects.module';
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     StoreModule.forRoot(reducerss),
     EffectsModule.forRoot([ProjectEffect, TranslationEffect]),
-    StoreDevtoolsModule.instrument({
-      maxAge: 2, // Retains last 25 states
-      logOnly: environment.production // Restrict extension to log-only mode
-    }),
+    // StoreDevtoolsModule.instrument({
+    //   maxAge: 2, // Retains last 25 states
+    //   logOnly: environment.production // Restrict extension to log-only mode
+    // }),
     ProjectsModule
   ],
   providers: [

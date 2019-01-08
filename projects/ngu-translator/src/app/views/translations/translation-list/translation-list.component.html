@@ -1,20 +1,39 @@
 <h3>Translation</h3>
 <mat-card *ngFor="let project of (projects$ | async)">
   <h3>{{ project.name }}</h3>
-  <!-- <app-translation-file-status
+  <app-translation-file-status
     [translationFileView]="project.translationFileView"
     [translationFile]="project.translationFile"
-  ></app-translation-file-status> -->
-  <button
-    mat-icon-button
-    (click)="deleteProject(project)"
-    matTooltip="Delete Project"
-    i18n-matTooltip
-  >
-    <mat-icon>delete</mat-icon>
-  </button>
-  <button mat-fab (click)="openProject(project)" matTooltip="Start Translation" i18n-matTooltip>
-    <mat-icon>translate</mat-icon>
-  </button>
+  ></app-translation-file-status>
+  <div class="fileAction">
+    <button
+      mat-button
+      color="primary"
+      (click)="openProject(project)"
+      matTooltip="Start Translation"
+      i18n-matTooltip
+    >
+      <mat-icon>translate</mat-icon>
+      Translate
+    </button>
+    <button
+      mat-icon-button
+      color="primary"
+      (click)="downloadTranslation(project)"
+      matTooltip="Download Translation"
+      i18n-matTooltip
+    >
+      <mat-icon>save</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      (click)="deleteTranslation(project)"
+      matTooltip="Delete Project"
+      color="warn"
+      i18n-matTooltip
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
 </mat-card>
 <button mat-fab class="addBtn" (click)="addProjects()">+</button>
