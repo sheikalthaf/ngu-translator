@@ -34,9 +34,9 @@ export class AddProjectComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
-    this.form.valueChanges.subscribe(formValue => {
-      this.valueChanged(formValue);
-    });
+    // this.form.valueChanges.subscribe(formValue => {
+    //   this.valueChanged(formValue);
+    // });
   }
 
   private initForm() {
@@ -47,7 +47,12 @@ export class AddProjectComponent implements OnInit {
         userRole: ['translator'],
         selectedFiles: [''],
         selectedMasterXmbFiles: [''],
-        sourceLanguage: ['']
+        sourceLanguage: [''],
+        percentageCompleted: 0,
+        selectedFormat: '',
+        sourceLanguages: '',
+        targetLanguages: '',
+        translationLength: 0
       });
     }
   }
@@ -76,6 +81,13 @@ export class AddProjectComponent implements OnInit {
         this.createdProject = newProject;
         if (this.createdProject) {
           this.createdProject.setUserRole(this.toUserRole(formValue.userRole));
+          this.form.patchValue({
+            percentageCompleted: this.createdProject.translationFile.percentageTranslated(),
+            selectedFormat: this.selectedFilesFormatted(),
+            sourceLanguages: this.createdProject.translationFile.sourceLanguage(),
+            targetLanguages: this.createdProject.translationFile.targetLanguage(),
+            translationLength: this.createdProject.translationFile.allTransUnits.length
+          });
           if (this.createdProject.translationFile) {
             this.createdProject.translationFile.setSourceLanguage(formValue.sourceLanguage);
           }

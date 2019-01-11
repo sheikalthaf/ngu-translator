@@ -1,4 +1,4 @@
-import { Directive, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { Directive, OnInit, OnDestroy, ElementRef, Renderer2 } from '@angular/core';
 import { ThemeService } from './theme.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -12,17 +12,20 @@ import cssVars from 'css-vars-ponyfill';
 export class ThemeDirective implements OnInit, OnDestroy {
   private _destroy$ = new Subject();
 
-  constructor(private _elementRef: ElementRef, private _themeService: ThemeService) {}
+  constructor(
+    private _elementRef: ElementRef,
+    private _themeService: ThemeService,
+    private renderer: Renderer2
+  ) {}
 
   ngOnInit() {
-    const active = this._themeService.getActiveTheme();
-    if (active) {
-      this.updateTheme(active);
-    }
-
-    this._themeService.themeChange
-      .pipe(takeUntil(this._destroy$))
-      .subscribe(theme => this.updateTheme(theme));
+    // const active = this._themeService.getActiveTheme();
+    // if (active) {
+    //   this.updateTheme(active);
+    // }
+    // this._themeService.themeChange
+    //   .pipe(takeUntil(this._destroy$))
+    //   .subscribe(theme => this.updateTheme(theme));
   }
 
   ngOnDestroy() {
@@ -44,11 +47,9 @@ export class ThemeDirective implements OnInit, OnDestroy {
     }
 
     // remove old theme
-    for (const name of this._themeService.theme) {
-      this._elementRef.nativeElement.classList.remove(`${name}-theme`);
-    }
+    this.renderer.removeClass(this._elementRef.nativeElement, `${this._themeService.theme}-theme`);
 
     // alias element with theme name
-    this._elementRef.nativeElement.classList.add(`${theme.name}-theme`);
+    this.renderer.addClass(this._elementRef.nativeElement, `${theme.name}-theme`);
   }
 }

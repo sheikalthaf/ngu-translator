@@ -40,8 +40,11 @@
             <span i18n>Upload a translation file (xlf, xtb)</span>
           </label>
           <div>
-            <span i18n>selected:</span>
-            {{ selectedFilesFormatted() }}
+            <div>selected: {{ form.value.selectedFormat }}</div>
+            <div i18n>Source Language: {{ form.value.sourceLanguages }}</div>
+            <div i18n>Target Language: {{ form.value.targetLanguages }}</div>
+            <div i18n>translation Length: {{ form.value.translationLength }}</div>
+            <div i18n>Percentage Translated: {{ form.value.percentageCompleted }}</div>
           </div>
         </div>
       </div>
@@ -80,6 +83,7 @@
         </div>
       </div>
       <p><b i18n>Selected translation file:</b></p>
+      Percentage Translated: {{ form.value.percentageCompleted }}
       <!-- <app-translation-file-status
         *ngIf="isFileSelected()"
         [translationFileView]="createdProject?.translationFileView"
