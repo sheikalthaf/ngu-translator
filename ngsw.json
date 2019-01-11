@@ -1,0 +1,93 @@
+{
+  "configVersion": 1,
+  "index": "https://sheikalthaf.github.io/ngu-translator/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "urls": [
+        "https://sheikalthaf.github.io/ngu-translator/5.legacy.d5ea2666756c533c803b.js",
+        "https://sheikalthaf.github.io/ngu-translator/5.modern.dc810652a8fc2e27e1a7.js",
+        "https://sheikalthaf.github.io/ngu-translator/6.legacy.4bd6f0f01f581c67cc44.js",
+        "https://sheikalthaf.github.io/ngu-translator/6.modern.a99dad9e7ad3cde14667.js",
+        "https://sheikalthaf.github.io/ngu-translator/common.legacy.07b9095195258f9bd691.js",
+        "https://sheikalthaf.github.io/ngu-translator/common.modern.01385a99e914a023a237.js",
+        "https://sheikalthaf.github.io/ngu-translator/favicon.ico",
+        "https://sheikalthaf.github.io/ngu-translator/index.html",
+        "https://sheikalthaf.github.io/ngu-translator/main.legacy.dc038f564c98baee5c12.js",
+        "https://sheikalthaf.github.io/ngu-translator/main.modern.2ab5138f7c5b46d4f08f.js",
+        "https://sheikalthaf.github.io/ngu-translator/polyfills.legacy.6dbbab79678b29f96adb.js",
+        "https://sheikalthaf.github.io/ngu-translator/polyfills.modern.ce853d17176f53ba4422.js",
+        "https://sheikalthaf.github.io/ngu-translator/runtime.legacy.8918a7708c92c9f707bf.js",
+        "https://sheikalthaf.github.io/ngu-translator/runtime.modern.af1f163ea6a79a6bba14.js",
+        "https://sheikalthaf.github.io/ngu-translator/styles.5a9a1f061ff7cd771243.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "urls": [
+        "https://sheikalthaf.github.io/ngu-translator/assets/Pirate_Flag.svg",
+        "https://sheikalthaf.github.io/ngu-translator/assets/icons/icon-128x128.png",
+        "https://sheikalthaf.github.io/ngu-translator/assets/icons/icon-144x144.png",
+        "https://sheikalthaf.github.io/ngu-translator/assets/icons/icon-152x152.png",
+        "https://sheikalthaf.github.io/ngu-translator/assets/icons/icon-192x192.png",
+        "https://sheikalthaf.github.io/ngu-translator/assets/icons/icon-384x384.png",
+        "https://sheikalthaf.github.io/ngu-translator/assets/icons/icon-512x512.png",
+        "https://sheikalthaf.github.io/ngu-translator/assets/icons/icon-72x72.png",
+        "https://sheikalthaf.github.io/ngu-translator/assets/icons/icon-96x96.png",
+        "https://sheikalthaf.github.io/ngu-translator/assets/xml-serializer.ts"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "https://sheikalthaf.github.io/ngu-translator/5.legacy.d5ea2666756c533c803b.js": "b53f539e7d1faae1f4eb33685c3645afc40c7dd6",
+    "https://sheikalthaf.github.io/ngu-translator/5.modern.dc810652a8fc2e27e1a7.js": "f9fd10a71c2d0bdfabca057061561a93091f7ef7",
+    "https://sheikalthaf.github.io/ngu-translator/6.legacy.4bd6f0f01f581c67cc44.js": "b023c2bf7c3c4d0929855189c3ff81e608baf85c",
+    "https://sheikalthaf.github.io/ngu-translator/6.modern.a99dad9e7ad3cde14667.js": "1e4c3674c71855b1bc79bb2b88b3cb6489f22959",
+    "https://sheikalthaf.github.io/ngu-translator/assets/Pirate_Flag.svg": "351dfa0ce24e4d430a28599fde2a96d91ee20892",
+    "https://sheikalthaf.github.io/ngu-translator/assets/icons/icon-128x128.png": "dae3b6ed49bdaf4327b92531d4b5b4a5d30c7532",
+    "https://sheikalthaf.github.io/ngu-translator/assets/icons/icon-144x144.png": "b0bd89982e08f9bd2b642928f5391915b74799a7",
+    "https://sheikalthaf.github.io/ngu-translator/assets/icons/icon-152x152.png": "7479a9477815dfd9668d60f8b3b2fba709b91310",
+    "https://sheikalthaf.github.io/ngu-translator/assets/icons/icon-192x192.png": "1abd80d431a237a853ce38147d8c63752f10933b",
+    "https://sheikalthaf.github.io/ngu-translator/assets/icons/icon-384x384.png": "329749cd6393768d3131ed6304c136b1ca05f2fd",
+    "https://sheikalthaf.github.io/ngu-translator/assets/icons/icon-512x512.png": "559d9c4318b45a1f2b10596bbb4c960fe521dbcc",
+    "https://sheikalthaf.github.io/ngu-translator/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
+    "https://sheikalthaf.github.io/ngu-translator/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
+    "https://sheikalthaf.github.io/ngu-translator/assets/xml-serializer.ts": "f75e17fdad9a009bd22d87c4b41dbea456b03389",
+    "https://sheikalthaf.github.io/ngu-translator/common.legacy.07b9095195258f9bd691.js": "21246464abe9e192a81b7443545109f6ce0c3322",
+    "https://sheikalthaf.github.io/ngu-translator/common.modern.01385a99e914a023a237.js": "6539bf1ca75eaf84993b18253ac1c57cccdad472",
+    "https://sheikalthaf.github.io/ngu-translator/favicon.ico": "84161b857f5c547e3699ddfbffc6d8d737542e01",
+    "https://sheikalthaf.github.io/ngu-translator/index.html": "19fbd86bac726268f4f4bbe664e1624dd31783ec",
+    "https://sheikalthaf.github.io/ngu-translator/main.legacy.dc038f564c98baee5c12.js": "ee1a8766a2614a95f9e8eddb4177e068bd64cc35",
+    "https://sheikalthaf.github.io/ngu-translator/main.modern.2ab5138f7c5b46d4f08f.js": "60c839429445ad9201bb8e2bcb645fc119435038",
+    "https://sheikalthaf.github.io/ngu-translator/polyfills.legacy.6dbbab79678b29f96adb.js": "d1d3a394dacf1969f7cc70046678abb44b7375d6",
+    "https://sheikalthaf.github.io/ngu-translator/polyfills.modern.ce853d17176f53ba4422.js": "36dd0f7217a3d18ad3961bff729949c1013b7a86",
+    "https://sheikalthaf.github.io/ngu-translator/runtime.legacy.8918a7708c92c9f707bf.js": "d55b01ea43cec651a9ac023496d1f61ad2528845",
+    "https://sheikalthaf.github.io/ngu-translator/runtime.modern.af1f163ea6a79a6bba14.js": "8f62ec8faffbea0f7c16fb8b385350ebbb29fb06",
+    "https://sheikalthaf.github.io/ngu-translator/styles.5a9a1f061ff7cd771243.css": "0bb05f28c9d827ea30de72c04c1bc781c30e7a07"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ]
+}
