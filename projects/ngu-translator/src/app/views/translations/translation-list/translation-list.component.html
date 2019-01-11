@@ -1,10 +1,28 @@
 <h3>Translation</h3>
-<mat-card *ngFor="let project of (projects$ | async)">
+<mat-card *ngFor="let project of (projects$ | async)" [@listStagger]>
   <h3>{{ project.name }}</h3>
-  <app-translation-file-status
+  <!-- <app-translation-file-status
     [translationFileView]="project.translationFileView"
     [translationFile]="project.translationFile"
-  ></app-translation-file-status>
+  ></app-translation-file-status> -->
+  <div class="langI">
+    <app-language [code]="project.sourceLanguages"></app-language>
+    <mat-icon>arrow_right_alt</mat-icon>
+    <app-language [code]="project.targetLanguages"></app-language>
+  </div>
+  <div class="prog-cent">
+    <mat-progress-spinner
+      mode="determinate"
+      [diameter]="100"
+      [strokeWidth]="10"
+      [value]="project.percentageCompleted"
+      color="accent"
+    ></mat-progress-spinner>
+    <span>{{ project.percentageCompleted | number: '0.1-2' }} %</span>
+  </div>
+  <div>
+    <h4 i18n>translation Length: {{ project.translationLength }}</h4>
+  </div>
   <div class="fileAction">
     <button
       mat-button

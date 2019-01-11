@@ -8,11 +8,32 @@ import { TranslationProject } from '@shared/services';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ProjectService } from '../../projects/projects.service';
+import { trigger, transition, style, stagger, animate, query } from '@angular/animations';
 
 @Component({
   selector: 'app-translation-list',
   templateUrl: './translation-list.component.html',
-  styleUrls: ['./translation-list.component.scss']
+  styleUrls: ['./translation-list.component.scss'],
+  animations: [
+    trigger('listStagger', [
+      transition('* <=> *', [
+        query(
+          ':enter',
+          [
+            style({ opacity: 0, transform: 'translateY(-15px)' }),
+            stagger(
+              '50ms',
+              animate('550ms ease-out', style({ opacity: 1, transform: 'translateY(0px)' }))
+            )
+          ],
+          { optional: true }
+        ),
+        query(':leave', animate('50ms', style({ opacity: 0 })), {
+          optional: true
+        })
+      ])
+    ])
+  ]
 })
 export class TranslationListComponent implements OnInit {
   projects$: Observable<TranslationProject[]>;
@@ -25,8 +46,8 @@ export class TranslationListComponent implements OnInit {
     private store: Store<any>
   ) {
     this.projects$ = store.pipe(
-      select(fromRoot.selectAll),
-      map(e => e.map(s => TranslationProject.deserialize(s)))
+      select(fromRoot.selectAll)
+      // map(e => e.map(s => TranslationProject.deserialize(s)))
     );
   }
 

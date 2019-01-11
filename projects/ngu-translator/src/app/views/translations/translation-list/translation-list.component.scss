@@ -3,6 +3,7 @@ mat-card {
   width: 200px;
   display: inline-flex;
   flex-direction: column;
+  position: relative;
 }
 
 button.addBtn {
@@ -17,4 +18,27 @@ h3 {
 }
 .fileAction {
   display: flex;
+}
+
+.langI {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+.prog-cent {
+  position: relative;
+  span {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    height: 18px;
+    width: 121px;
+    text-align: center;
+  }
+  mat-progress-spinner {
+    margin: 0 auto;
+  }
 }

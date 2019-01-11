@@ -46,6 +46,14 @@ export class TranslationProject {
 
   workflowType: WorkflowType;
 
+  percentageCompleted: number;
+
+  sourceLanguages: string;
+
+  targetLanguages: string;
+
+  translationLength: number;
+
   /**
    * Create a project from the serialization.
    * @param serializationString
@@ -92,6 +100,10 @@ export class TranslationProject {
     const serializedObject = {
       id: this.id,
       name: this.name,
+      selectedFormat: '',
+      sourceLanguages: '',
+      targetLanguages: '',
+      translationLength: 0,
       translationFile: this.translationFile.serialize(),
       workflowType: this.workflowType,
       userRole: this.userRole
@@ -103,6 +115,11 @@ export class TranslationProject {
     return {
       id: this.id,
       name: this.name,
+      percentageCompleted: this.translationFile.percentageTranslated(),
+      // selectedFormat: this.selectedFilesFormatted(),
+      sourceLanguages: this.translationFile.sourceLanguage(),
+      targetLanguages: this.translationFile.targetLanguage(),
+      translationLength: this.translationFile.allTransUnits.length,
       translationFile: this.translationFile.serializeTest(),
       workflowType: this.workflowType,
       userRole: this.userRole
