@@ -32,8 +32,9 @@ mat-sidenav-content {
     background: var(--background);
     color: var(--on-background);
     main {
-      background: #24c2f1;
+      background: #28465f;
       width: 60px;
+      color: #fff;
       ul {
         justify-content: center;
         align-items: center;
@@ -54,7 +55,7 @@ mat-sidenav-content {
         li {
           padding: 10px;
           &.active {
-            background: #a9bd92;
+            background: #000;
           }
         }
       }
@@ -74,7 +75,7 @@ mat-sidenav-content {
         box-sizing: border-box;
         a {
           text-decoration: none;
-          color: black;
+          color: white;
         }
       }
     }

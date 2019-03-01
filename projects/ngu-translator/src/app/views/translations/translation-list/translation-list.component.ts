@@ -36,7 +36,8 @@ import { trigger, transition, style, stagger, animate, query } from '@angular/an
   ]
 })
 export class TranslationListComponent implements OnInit {
-  projects$: Observable<TranslationProject[]>;
+  projects$ = this.store.pipe(select(fromRoot.selectAll));
+
   currentProjectId$: Observable<string>;
 
   constructor(
@@ -45,15 +46,13 @@ export class TranslationListComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private store: Store<any>
   ) {
-    this.projects$ = store.pipe(
-      select(fromRoot.selectAll)
-      // map(e => e.map(s => TranslationProject.deserialize(s)))
-    );
+    // map(e => e.map(s => TranslationProject.deserialize(s)))
   }
 
   ngOnInit() {}
 
   openProject(project: TranslationProject) {
+    console.log(project);
     this.store.dispatch(new SetCurrentProject(project));
     this.router.navigate(['/translate']);
   }

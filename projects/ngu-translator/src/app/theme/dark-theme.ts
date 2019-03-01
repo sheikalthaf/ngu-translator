@@ -3,8 +3,8 @@ import { Theme } from './symbols';
 export const darkTheme: Theme = {
   name: 'dark',
   properties: {
-    '--background': '#1F2125',
-    '--on-background': '#fff',
+    '--background': '#f2f2f2',
+    '--on-background': '#000',
     '--primary': '#2F90FF',
     '--on-primary': '#fff',
     '--secondary': '#474A4F',
