@@ -1,8 +1,6 @@
 import { createSelector } from '@ngrx/store';
-import { TranslationProject, TranslationFileView, TranslationUnit } from '../shared/services';
 import { AppState } from './reducers';
 export { AppState } from './reducers';
-// export { AppStates } from './reducers/projects';
 import * as fromRoot from './reducers/projects.selectors';
 
 // export class AppState {
@@ -17,7 +15,9 @@ import * as fromRoot from './reducers/projects.selectors';
 // }
 
 export const currentProject = (state: AppState) => state.translation.currentId;
+
 export const projects = (state: AppState) => state.translation.projects;
+
 export const selectTransUnit = (state: AppState) => state.translation.selectTransUnit;
 // export const selectedProject = (state: AppState) => state.translation.currentProject;
 export const translationObjs = (state: AppState) => state.translation;
