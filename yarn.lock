@@ -5390,10 +5390,10 @@ ngx-i18nsupport-lib@^1.10.2:
     tokenizr "^1.3.4"
     xmldom "^0.1.27"
 
-ngx-take-until-destroy@^5.2.3:
-  version "5.2.3"
-  resolved "https://registry.yarnpkg.com/ngx-take-until-destroy/-/ngx-take-until-destroy-5.2.3.tgz#527cdb3520568f19c7cf010aa20e76bb5ee308f9"
-  integrity sha512-d9gblFK/kb4l2/OzuY5MK8ML2Rqs71XHq3Ks5plmCe3yKLwTnjiKNCA1E6yzpVxDYdnjbcW04rjt8RZlXUpxaA==
+ngx-take-until-destroy@5.4.0:
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/ngx-take-until-destroy/-/ngx-take-until-destroy-5.4.0.tgz#6c8606ee956584dc947e2eb609c48b8f98b09900"
+  integrity sha512-e+VfCrHbLybdKWoQ8prdhmVzWI6vTnedr/9cVGQTkfepMdLz5D++VDk+Wnbs7mru6S9C+kIpNWUlh2YMPl928Q==
   dependencies:
     tslib "^1.9.0"
 
