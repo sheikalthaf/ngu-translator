@@ -35,7 +35,7 @@
     "@ngrx/entity": "^7.0.0",
     "@ngrx/store": "^7.0.0",
     "@ngrx/store-devtools": "^7.0.0",
-    "core-js": "^2.5.4",
+    "core-js": "2.6.12",
     "css-vars-ponyfill": "^1.16.2",
     "file-saver": "^2.0.0",
     "flag-icon-css": "^3.2.1",
